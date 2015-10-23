@@ -4,7 +4,7 @@ package edu.edwinhollen.doremi;
  * Created by Edwin on 10/23/15
  */
 public class Note {
-    Notes.NoteName noteName;
+    NoteName noteName;
     Accidental accidental;
     Integer octave;
 
@@ -14,7 +14,7 @@ public class Note {
      * @param accidental the accidental
      * @param octave the octave
      */
-    public Note(Notes.NoteName noteName, Accidental accidental, Integer octave) {
+    public Note(NoteName noteName, Accidental accidental, Integer octave) {
         this.noteName = noteName;
         this.accidental = accidental;
         this.octave = octave;
@@ -25,7 +25,7 @@ public class Note {
      * @param noteName the note name
      * @param accidental the accidental
      */
-    public Note(Notes.NoteName noteName, Accidental accidental) {
+    public Note(NoteName noteName, Accidental accidental) {
         this(noteName, accidental, null);
     }
 
@@ -34,7 +34,7 @@ public class Note {
      * Accidental is assumed natural, and octave assumed null
      * @param noteName the note name
      */
-    public Note(Notes.NoteName noteName) {
+    public Note(NoteName noteName) {
         this(noteName, Accidental.natural, null);
     }
 
@@ -59,7 +59,7 @@ public class Note {
     public static Note valueOf(String noteString) {
         char[] parts = noteString.toLowerCase().toCharArray();
 
-        Notes.NoteName name = Notes.NoteName.valueOf(String.valueOf(parts[0]));
+        NoteName name = NoteName.valueOf(String.valueOf(parts[0]));
         Accidental accidental = Accidental.fromChar(parts[1]);
         Integer octave;
         try {
@@ -75,5 +75,9 @@ public class Note {
     public String toString() {
         String pattern = this.octave == null ? "%s%s" : "%s%s%s";
         return String.format(pattern, this.noteName, Accidental.toChar(this.accidental), this.octave);
+    }
+
+    public enum NoteName{
+        a, b, c, d, e, f, g
     }
 }
