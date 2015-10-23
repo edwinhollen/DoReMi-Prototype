@@ -5,7 +5,7 @@ package edu.edwinhollen.doremi;
  */
 public class Note {
     Notes.NoteName noteName;
-    Notes.Accidental accidental;
+    Accidental accidental;
     Integer octave;
 
     /**
@@ -14,7 +14,7 @@ public class Note {
      * @param accidental the accidental
      * @param octave the octave
      */
-    public Note(Notes.NoteName noteName, Notes.Accidental accidental, Integer octave) {
+    public Note(Notes.NoteName noteName, Accidental accidental, Integer octave) {
         this.noteName = noteName;
         this.accidental = accidental;
         this.octave = octave;
@@ -25,7 +25,7 @@ public class Note {
      * @param noteName the note name
      * @param accidental the accidental
      */
-    public Note(Notes.NoteName noteName, Notes.Accidental accidental) {
+    public Note(Notes.NoteName noteName, Accidental accidental) {
         this(noteName, accidental, null);
     }
 
@@ -35,7 +35,7 @@ public class Note {
      * @param noteName the note name
      */
     public Note(Notes.NoteName noteName) {
-        this(noteName, Notes.Accidental.natural, null);
+        this(noteName, Accidental.natural, null);
     }
 
 
@@ -60,7 +60,7 @@ public class Note {
         char[] parts = noteString.toLowerCase().toCharArray();
 
         Notes.NoteName name = Notes.NoteName.valueOf(String.valueOf(parts[0]));
-        Notes.Accidental accidental = Notes.charToAccidental(parts[1]);
+        Accidental accidental = Accidental.fromChar(parts[1]);
         Integer octave;
         try {
             octave = Integer.parseInt(String.valueOf(parts[2]));
@@ -74,6 +74,6 @@ public class Note {
     @Override
     public String toString() {
         String pattern = this.octave == null ? "%s%s" : "%s%s%s";
-        return String.format(pattern, this.noteName, Notes.accidentalToChar(this.accidental), this.octave);
+        return String.format(pattern, this.noteName, Accidental.toChar(this.accidental), this.octave);
     }
 }

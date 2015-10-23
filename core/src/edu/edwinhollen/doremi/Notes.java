@@ -23,29 +23,4 @@ public class Notes {
         a, b, c, d, e, f, g
     }
 
-    public enum Accidental{
-        sharp, flat, natural
-    }
-
-    public static Accidental charToAccidental(Character c){
-        switch(c){
-            case '#':
-                return Accidental.sharp;
-            case 'b':
-                return Accidental.flat;
-            default:
-                return Accidental.natural;
-        }
-    }
-
-    public static Character accidentalToChar(Accidental a){
-        switch(a){
-            case sharp:
-                return '#';
-            case flat:
-                return 'b';
-            default:
-                return 'n';
-        }
-    }
 }
