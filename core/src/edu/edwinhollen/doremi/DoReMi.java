@@ -23,7 +23,8 @@ public class DoReMi extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		viewport = new FitViewport(336, 210);
-		Gdx.input.setCatchBackKey(true);
+		// Gdx.input.setCatchBackKey(true);
+
 		changeStage(TitleStage.class);
 	}
 

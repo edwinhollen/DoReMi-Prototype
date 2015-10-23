@@ -19,40 +19,33 @@ public class Notes {
             minor = {R, W, H, W, W, H, W, W};
     }
 
-    public class Note{
-        NoteName noteName;
-        Accidental accidental;
-        Integer octave;
-
-        public Note(NoteName noteName, Accidental accidental, Integer octave) {
-            this.noteName = noteName;
-            this.accidental = accidental;
-            this.octave = octave;
-        }
-
-        public Note(NoteName noteName, Accidental accidental) {
-            this(noteName, accidental, null);
-        }
-
-        public Note(NoteName noteName) {
-            this(noteName, Accidental.natural, null);
-        }
-
-        /**
-         * Parse a note string
-         * The string should be in [note][accidental?][octave] format
-         * @param noteString The string to parse
-         */
-        public Note(String noteString){
-
-        }
-    }
-
     public enum NoteName{
         a, b, c, d, e, f, g
     }
 
     public enum Accidental{
         sharp, flat, natural
+    }
+
+    public static Accidental charToAccidental(Character c){
+        switch(c){
+            case '#':
+                return Accidental.sharp;
+            case 'b':
+                return Accidental.flat;
+            default:
+                return Accidental.natural;
+        }
+    }
+
+    public static Character accidentalToChar(Accidental a){
+        switch(a){
+            case sharp:
+                return '#';
+            case flat:
+                return 'b';
+            default:
+                return 'n';
+        }
     }
 }
