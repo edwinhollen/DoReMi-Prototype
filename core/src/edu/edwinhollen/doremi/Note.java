@@ -4,80 +4,46 @@ package edu.edwinhollen.doremi;
  * Created by Edwin on 10/23/15
  */
 public class Note {
-    NoteName noteName;
+    NoteName note;
     Accidental accidental;
     Integer octave;
 
-    /**
-     * Construct a note given note name, accidental, and octave
-     * @param noteName the note name
-     * @param accidental the accidental
-     * @param octave the octave
-     */
-    public Note(NoteName noteName, Accidental accidental, Integer octave) {
-        this.noteName = noteName;
+    public Note(NoteName note, Accidental accidental, Integer octave){
+        this.note = note;
         this.accidental = accidental;
         this.octave = octave;
     }
 
-    /**
-     * Construct a note given a note name and accidental
-     * @param noteName the note name
-     * @param accidental the accidental
-     */
-    public Note(NoteName noteName, Accidental accidental) {
-        this(noteName, accidental, null);
+    public Note(NoteName note, Accidental accidental){
+        this(note, accidental, null);
     }
 
-    /**
-     * Construct a note given a name
-     * Accidental is assumed natural, and octave assumed null
-     * @param noteName the note name
-     */
-    public Note(NoteName noteName) {
-        this(noteName, Accidental.natural, null);
+    public Note(NoteName note){
+        this(note, Accidental.natural);
     }
 
-
-    /**
-     * Construct a note from a note string
-     * @see edu.edwinhollen.doremi.Note#valueOf(String)
-     * @param noteString the note string to parse
-     */
-    public Note(String noteString) {
-        Note v = valueOf(noteString);
-        this.noteName = v.noteName;
-        this.accidental = v.accidental;
-        this.octave = v.octave;
-    }
-
-    /**
-     * Parse a note string
-     * The string should be in [note][accidental][octave] format
-     * @param noteString The string to parse
-     */
-    public static Note valueOf(String noteString) {
+    public Note(String noteString){
         char[] parts = noteString.toLowerCase().toCharArray();
+        Integer parsedOctave = null;
+        NoteName parsedNoteName;
+        Accidental parsedAccidental = Accidental.natural;
 
-        NoteName name = NoteName.valueOf(String.valueOf(parts[0]));
-        Accidental accidental = Accidental.fromChar(parts[1]);
-        Integer octave;
-        try {
-            octave = Integer.parseInt(String.valueOf(parts[2]));
-        }catch(IndexOutOfBoundsException e){
-            octave = null;
+        switch(parts.length){
+            case 3:
+                parsedOctave = Integer.parseInt(String.valueOf(parts[2]));
+            case 2:
+                parsedAccidental = Accidental.fromChar(parts[1]);
+            default:
+                parsedNoteName = NoteName.valueOf(String.valueOf(parts[0]));
         }
 
-        return new Note(name, accidental, octave);
+        this.note = parsedNoteName;
+        this.accidental = parsedAccidental;
+        this.octave = parsedOctave;
     }
 
     @Override
     public String toString() {
-        String pattern = this.octave == null ? "%s%s" : "%s%s%s";
-        return String.format(pattern, this.noteName, Accidental.toChar(this.accidental), this.octave);
-    }
-
-    public enum NoteName{
-        a, b, c, d, e, f, g
+        return String.format("%s%s%s", this.note.toString(), this.accidental.toString(), this.octave == null ? "" : this.octave.toString());
     }
 }
