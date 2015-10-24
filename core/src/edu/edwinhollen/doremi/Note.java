@@ -43,6 +43,17 @@ public class Note {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Note) return false;
+        Note otherNote = (Note) obj;
+        return this.equalsIgnoreOctave(otherNote) && this.octave.equals(otherNote.octave);
+    }
+
+    public boolean equalsIgnoreOctave(Note otherNote){
+        return otherNote.note.equals(this.note) && otherNote.accidental.equals(this.accidental);
+    }
+
+    @Override
     public String toString() {
         return String.format("%s%s%s", this.note.toString(), this.accidental.toString(), this.octave == null ? "" : this.octave.toString());
     }

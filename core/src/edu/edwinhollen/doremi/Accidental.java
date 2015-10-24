@@ -17,7 +17,7 @@ public enum Accidental {
         }
     }
 
-    public static Character toChar(Accidental a) {
+    public Character toChar(Accidental a) {
         switch (a) {
             case sharp:
                 return '#';
@@ -26,5 +26,11 @@ public enum Accidental {
             default:
                 return 'n';
         }
+    }
+
+
+    @Override
+    public String toString() {
+        return String.valueOf(toChar(this));
     }
 }
