@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Edwin on 10/23/15
  */
 public class ScalePattern {
-    public static final int WHOLE_STEP = 2, HALF_STEP = 1, ROOT = 0;
+    private static final int WHOLE_STEP = 2, HALF_STEP = 1, ROOT = 0;
     List<Integer> scaleSteps;
     public ScalePattern(Integer... scaleSteps){
         this.scaleSteps = Arrays.asList(scaleSteps);

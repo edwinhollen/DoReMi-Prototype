@@ -8,25 +8,22 @@ import java.util.List;
 /**
  * Created by Edwin on 10/24/15
  */
-public class Scales {
+public class Scale {
+    List<Note> notes = new LinkedList<>();
 
-
-    public static class Scale{
-        List<Note> notes = new LinkedList<>();
-        public Scale(Note rootNote, ScalePattern pattern){
-            ScaleIterator scaleIterator = new ScaleIterator(rootNote, pattern);
-            do{
-                notes.add(scaleIterator.next());
-            }while(this.notes.size() < pattern.scaleSteps.size());
-        }
-
-        @Override
-        public String toString() {
-            return Arrays.toString(this.notes.toArray());
-        }
+    public Scale(Note rootNote, ScalePattern pattern) {
+        ScaleIterator scaleIterator = new ScaleIterator(rootNote, pattern);
+        do {
+            notes.add(scaleIterator.next());
+        } while (this.notes.size() < pattern.scaleSteps.size());
     }
 
-    public static class ScaleIterator implements Iterator<Note>{
+    @Override
+    public String toString() {
+        return Arrays.toString(this.notes.toArray());
+    }
+
+    private static class ScaleIterator implements Iterator<Note> {
         private static final List<Note> chromatic = new LinkedList<>(Arrays.asList(
             new Note("cn"), new Note("c#"), new Note("dn"), new Note("eb"),
             new Note("en"), new Note("fn"), new Note("f#"), new Note("gn"),
