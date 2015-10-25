@@ -9,12 +9,15 @@ import java.util.List;
  */
 public class ScalePattern {
     private static final int WHOLE_STEP = 2, HALF_STEP = 1, ROOT = 0;
-    List<Integer> scaleSteps;
-    public ScalePattern(Integer... scaleSteps){
+    final List<Integer> scaleSteps;
+    final String name;
+    public ScalePattern(String name, Integer... scaleSteps){
+        this.name = name;
         this.scaleSteps = Arrays.asList(scaleSteps);
     }
 
-    public ScalePattern(char[] scaleStepsChars){
+    public ScalePattern(String name, char[] scaleStepsChars){
+        this.name = name;
         this.scaleSteps = new LinkedList<>();
         for(char c : scaleStepsChars){
             switch(c){
@@ -30,5 +33,11 @@ public class ScalePattern {
                     break;
             }
         }
+    }
+
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }
