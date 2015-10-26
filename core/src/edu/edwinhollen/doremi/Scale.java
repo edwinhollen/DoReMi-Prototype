@@ -34,7 +34,7 @@ public class Scale {
      * @return a list of notes in the arpeggio
      */
     public List<Note> getArpeggio(){
-        return Arrays.asList(notes.get(0), notes.get(2), notes.get(4), notes.get(7));
+        return Arrays.asList(notes.get(0), notes.get(2), notes.get(4), notes.get(8));
     }
 
     @Override

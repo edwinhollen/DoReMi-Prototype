@@ -70,7 +70,10 @@ public class Puzzle {
                     break;
                 }
             }
-            if(canUse) extraNotes.add(candidate);
+            if(canUse){
+                candidate.octave = Pick.integer(OCTAVE_MIN, OCTAVE_MAX);
+                extraNotes.add(candidate);
+            }
         }
     }
 
