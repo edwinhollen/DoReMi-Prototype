@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Align;
 
 /**
@@ -22,10 +24,12 @@ public class NotePieceActor extends Actor {
     static final TextureRegion staff = new TextureRegion(new Texture(Gdx.files.internal("staff.png")));
     final NotePieceOrientation orientation;
     final Note note;
+    final Action wiggleAction = Actions.forever(Actions.sequence(Actions.rotateBy(5.0f, 0.5f), Actions.rotateBy(-5f, 0.5f)));
 
     public NotePieceActor(NotePieceOrientation orientation, final Note note){
         this.orientation = orientation;
         this.note = note;
+        this.addAction(wiggleAction);
 
         addListener(new InputListener(){
             @Override
@@ -36,7 +40,13 @@ public class NotePieceActor extends Actor {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                setPosition(getX() + x - getWidth(), getY() + y - getHeight());
+                moveBy(x - getWidth() / 2, y - getHeight() / 2);
+                addAction(wiggleAction);
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                removeAction(wiggleAction);
             }
         });
     }
@@ -47,7 +57,7 @@ public class NotePieceActor extends Actor {
         switch(this.orientation){
             case left:
                 leftSide = left_closed;
-                rightSide = right_closed;
+                rightSide = right_male;
                 break;
             case middle:
                 leftSide = left_female;
