@@ -1,9 +1,12 @@
 package edu.edwinhollen.doremi.stages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import edu.edwinhollen.doremi.DoReMi;
@@ -19,6 +22,16 @@ public abstract class BaseStage extends Stage {
     public BaseStage(Viewport viewport, Batch batch, Color backgroundColor) {
         super(viewport, batch);
         this.backgroundColor = backgroundColor;
+
+        this.addListener(new InputListener(){
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if(keycode == Input.Keys.ESCAPE){
+                    Gdx.app.exit();
+                }
+                return true;
+            }
+        });
     }
 
     @Override

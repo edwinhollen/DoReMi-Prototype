@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by Edwin on 10/26/15
  */
-public class Notes {
+public class Notes{
     private static Map<String, Sound> loadedSounds = new HashMap<>();
     public static void play(final Note n){
         final String path = String.format("instruments/piano/%s.mp3", n.toString());
@@ -24,5 +24,12 @@ public class Notes {
                 loadedSounds.get(path).play();
             }
         }).start();
+    }
+
+    public static void dispose() {
+        for(Sound s : loadedSounds.values()){
+            s.dispose();
+        }
+        loadedSounds.clear();
     }
 }
