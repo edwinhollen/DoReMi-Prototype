@@ -15,67 +15,64 @@ import com.badlogic.gdx.utils.Align;
  * Created by Edwin on 10/26/15
  */
 public class NotePieceActor extends Actor {
-    static final Texture notePieceTemplate = new Texture(Gdx.files.internal("note_piece_template.png"));
+    static final Texture notePieceTemplate = new Texture(Gdx.files.internal("note_pieces_together.png"));
     static final TextureRegion
-        left_closed = new TextureRegion(notePieceTemplate, 0, 0, 26, 46),
-        left_female = new TextureRegion(notePieceTemplate, 27, 0, 26, 46),
-        right_closed = new TextureRegion(notePieceTemplate, 54, 0, 26, 46),
-        right_male = new TextureRegion(notePieceTemplate, 81, 0, 32, 46);
-    static final TextureRegion staff = new TextureRegion(new Texture(Gdx.files.internal("staff.png")));
+        closed_closed = new TextureRegion(notePieceTemplate, 0, 0, 52, 46),
+        closed_female = new TextureRegion(notePieceTemplate, 0, 46, 52, 46),
+        female_closed = new TextureRegion(notePieceTemplate, 0, 92, 52, 46),
+        female_male = new TextureRegion(notePieceTemplate, 0, 138, 58, 46),
+        closed_male = new TextureRegion(notePieceTemplate, 0, 184, 58, 46);
     final NotePieceOrientation orientation;
     final Note note;
     final Action wiggleAction = Actions.forever(Actions.sequence(Actions.rotateBy(5.0f, 0.5f), Actions.rotateBy(-5f, 0.5f)));
 
+    static int zIndex = 0;
+
     public NotePieceActor(NotePieceOrientation orientation, final Note note){
         this.orientation = orientation;
         this.note = note;
-        this.addAction(wiggleAction);
 
         addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Notes.play(note);
+                setZIndex(++zIndex);
                 return true;
             }
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 moveBy(x - getWidth() / 2, y - getHeight() / 2);
-                addAction(wiggleAction);
+
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                removeAction(wiggleAction);
+
             }
         });
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        TextureRegion leftSide, rightSide;
+        TextureRegion tr;
         switch(this.orientation){
             case left:
-                leftSide = left_closed;
-                rightSide = right_male;
+                tr = closed_male;
                 break;
             case middle:
-                leftSide = left_female;
-                rightSide = right_male;
+                tr = female_male;
                 break;
             case right:
-                leftSide = left_female;
-                rightSide = right_closed;
+                tr = female_closed;
                 break;
             default:
-                leftSide = left_closed;
-                rightSide = right_closed;
+                tr = closed_closed;
         }
 
-        setSize(leftSide.getRegionWidth() + rightSide.getRegionWidth(), leftSide.getRegionHeight());
+        setSize(tr.getRegionWidth(), tr.getRegionHeight());
         setOrigin(Align.center);
-        batch.draw(leftSide, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX()/2, getScaleY(), getRotation());
-        batch.draw(rightSide, getX() + leftSide.getRegionWidth(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX()/2, getScaleY(), getRotation());
+        batch.draw(tr, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
 
         DoReMi.Fonts.normal.setColor(DoReMi.Palette.black);
         DoReMi.Fonts.normal.draw(batch, this.note.toString(), getX() + getWidth() / 2 - 10, getY() + getHeight() / 2, getWidth(), Align.center, false);
