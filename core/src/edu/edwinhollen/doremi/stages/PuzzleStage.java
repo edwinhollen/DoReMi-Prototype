@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import edu.edwinhollen.doremi.*;
 
@@ -19,11 +20,12 @@ import java.util.List;
 public class PuzzleStage extends BaseStage {
     Actor listenButton;
     Group solutionSlotActors;
+    Puzzle p;
 
     public PuzzleStage(Viewport viewport, Batch batch) {
         super(viewport, batch, DoReMi.Palette.gray);
 
-        Puzzle p = new Puzzle(Puzzle.RangeDifficulty.easy, Puzzle.NoteDiversity.low);
+        p = new Puzzle(Puzzle.RangeDifficulty.easy, Puzzle.NoteDiversity.low);
         System.out.println(p.toString());
 
         listenButton = new ListenButtonActor();
@@ -86,7 +88,7 @@ public class PuzzleStage extends BaseStage {
         }
     }
 
-    public static class ListenButtonActor extends Actor{
+    public class ListenButtonActor extends Actor{
         boolean isDown = false;
         private Texture tx = new Texture(Gdx.files.internal("button_hear.png"));
         private TextureRegion
@@ -99,6 +101,15 @@ public class PuzzleStage extends BaseStage {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     isDown = true;
+                    for(int i = 0; i < p.getSolutionNotes().size(); i++){
+                        final int finalI = i;
+                        Timer.schedule(new Timer.Task() {
+                            @Override
+                            public void run() {
+                                Notes.play(p.getSolutionNotes().get(finalI));
+                            }
+                        }, 0.5f * i);
+                    }
                     return true;
                 }
 
