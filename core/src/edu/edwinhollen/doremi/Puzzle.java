@@ -81,6 +81,10 @@ public class Puzzle {
         return this.solutionNotes;
     }
 
+    public List<Note> getExtraNotes(){
+        return this.extraNotes;
+    }
+
     @Override
     public String toString() {
         return String.format("Puzzle is based on %s %s \n Solution:\t%s\nExtras:\t%s",
