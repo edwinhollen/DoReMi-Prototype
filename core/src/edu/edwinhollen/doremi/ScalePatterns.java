@@ -9,7 +9,7 @@ public class ScalePatterns {
      */
     public static final ScalePattern
             major = new ScalePattern("major", "RWWHWWWH".toCharArray()),
-            minor = new ScalePattern("minor", "RWHWWHWW".toCharArray()),
+            minor = new ScalePattern("minor", "RWHWWWWH".toCharArray()),
             dorian = new ScalePattern("dorian", "RWHWWWHW".toCharArray()),
             chromatic = new ScalePattern("chromatic", "RHHHHHHHHHHH".toCharArray());
 }

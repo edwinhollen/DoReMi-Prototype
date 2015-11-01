@@ -28,7 +28,10 @@ public class PuzzleStage extends BaseStage {
         super(viewport, batch, DoReMi.Palette.gray);
 
         p = new Puzzle(Puzzle.RangeDifficulty.easy, Puzzle.NoteDiversity.low);
+
         System.out.println(p.toString());
+
+
 
         listenButton = new ListenButtonActor();
         listenButton.setPosition(16, viewport.getWorldHeight() - listenButton.getHeight() - 16);

@@ -16,6 +16,20 @@ public class Puzzle {
     final ScalePattern solutionScalePattern;
     final List<Note> solutionNotes, extraNotes;
 
+    /**
+     * Debug purposes
+     * @param solutionNotes
+     * @param extraNotes
+     */
+    public Puzzle(List<Note> solutionNotes, List<Note> extraNotes){
+        this.solutionNotes = solutionNotes;
+        this.extraNotes = extraNotes;
+        solutionScalePattern = null;
+        solutionRootNote = solutionNotes.get(0);
+        noteDiversity = null;
+        rangeDifficulty = null;
+    }
+
     public Puzzle(RangeDifficulty rd, NoteDiversity nd){
         this.rangeDifficulty = rd;
         this.noteDiversity = nd;
@@ -44,12 +58,12 @@ public class Puzzle {
         switch(this.noteDiversity){
             case medium: {
                 solutionScalePattern = Pick.pick(ScalePatterns.major, ScalePatterns.minor);
-                solutionNotes = Pick.pick(new Scale(solutionRootNote, solutionScalePattern).notes, 4);
+                solutionNotes = Pick.pick(new Scale(solutionRootNote, solutionScalePattern).getNotes(), 4);
                 break;
             }
             case high: {
                 solutionScalePattern = ScalePatterns.chromatic;
-                solutionNotes = Pick.pick(new Scale(solutionRootNote, ScalePatterns.chromatic).notes, 4);
+                solutionNotes = Pick.pick(new Scale(solutionRootNote, ScalePatterns.chromatic).getNotes(), 4);
                 break;
             }
             default: {
@@ -89,7 +103,7 @@ public class Puzzle {
     public String toString() {
         return String.format("Puzzle is based on %s %s \n Solution:\t%s\nExtras:\t%s",
                 this.solutionRootNote.toString(),
-                this.solutionScalePattern.toString(),
+                this.solutionScalePattern == null ? "?" : this.solutionScalePattern.toString(),
                 Arrays.toString(this.solutionNotes.toArray()),
                 Arrays.toString(this.extraNotes.toArray())
         );
