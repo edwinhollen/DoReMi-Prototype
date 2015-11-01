@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import edu.edwinhollen.doremi.stages.PuzzleStage;
+import edu.edwinhollen.doremi.stages.TitleStage;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -24,7 +24,7 @@ public class DoReMi extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		viewport = new FitViewport(336, 210);
 
-		changeStage(PuzzleStage.class);
+		changeStage(TitleStage.class);
 	}
 
 	@Override
