@@ -44,7 +44,7 @@ public class Note {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof Note) return false;
+        if(!(obj instanceof Note)) return false;
         Note otherNote = (Note) obj;
         return this.equalsIgnoreOctave(otherNote) && this.octave.equals(otherNote.octave);
     }

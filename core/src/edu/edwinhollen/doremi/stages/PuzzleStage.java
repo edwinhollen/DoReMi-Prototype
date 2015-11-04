@@ -1,6 +1,7 @@
 package edu.edwinhollen.doremi.stages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import edu.edwinhollen.doremi.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,9 +25,16 @@ public class PuzzleStage extends BaseStage {
     Group solutionSlotActors;
     Group notePieceActors;
     Puzzle p;
+    Sound clickUp, clickDown;
+
+    final Texture outlines = new Texture(Gdx.files.internal("note_pieces_together_outlines.png"));
 
     public PuzzleStage(Viewport viewport, Batch batch) {
         super(viewport, batch, DoReMi.Palette.gray);
+
+        // load sounds
+        clickDown = Gdx.audio.newSound(Gdx.files.internal("click_down.mp3"));
+        clickUp = Gdx.audio.newSound(Gdx.files.internal("click_up.mp3"));
 
         p = new Puzzle(Puzzle.RangeDifficulty.easy, Puzzle.NoteDiversity.low);
 
@@ -40,19 +49,19 @@ public class PuzzleStage extends BaseStage {
         // add solution slots
         solutionSlotActors = new Group();
         // slot 0
-        SolutionSlotActor ss0 = new SolutionSlotActor(NotePieceOrientation.left);
+        SolutionSlotActor ss0 = new SolutionSlotActor(NotePieceOrientation.left, 0);
         ss0.setPosition(0, 0);
         solutionSlotActors.addActor(ss0);
         // slot 1
-        SolutionSlotActor ss1 = new SolutionSlotActor(NotePieceOrientation.middle);
+        SolutionSlotActor ss1 = new SolutionSlotActor(NotePieceOrientation.middle, 1);
         ss1.setPosition(51, 0);
         solutionSlotActors.addActor(ss1);
         // slot 2
-        SolutionSlotActor ss2 = new SolutionSlotActor(NotePieceOrientation.middle);
+        SolutionSlotActor ss2 = new SolutionSlotActor(NotePieceOrientation.middle, 2);
         ss2.setPosition(102, 0);
         solutionSlotActors.addActor(ss2);
         // slot 3
-        SolutionSlotActor ss3 = new SolutionSlotActor(NotePieceOrientation.right);
+        SolutionSlotActor ss3 = new SolutionSlotActor(NotePieceOrientation.right, 3);
         ss3.setPosition(153, 0);
         solutionSlotActors.addActor(ss3);
 
@@ -95,6 +104,35 @@ public class PuzzleStage extends BaseStage {
         addActor(notePieceActors);
     }
 
+    protected boolean checkSolved(){
+        System.out.println("checking if solved");
+        List<Note> proposedSolution = new LinkedList<>();
+        for(Actor a : solutionSlotActors.getChildren()){
+            SolutionSlotActor ssa = (SolutionSlotActor) a;
+
+            if(!ssa.isOccupied()){
+                System.out.println("ssa #"+ssa.solutionSlot+" is not occupied, not solved");
+                return false;
+            }
+            /*
+            if(!ssa.occupiedBy.note.equals(p.getSolutionNotes().get(ssa.solutionSlot))){
+                System.out.println("the note in slot "+ssa.solutionSlot+" is not correct, not solved");
+                return false;
+            }
+            */
+            proposedSolution.add(ssa.occupiedBy.getNote());
+        }
+        System.out.println("Proposed solution "+proposedSolution.toString());
+        for(int i = 0; i < proposedSolution.size(); i++){
+            String status;
+            if(!proposedSolution.get(i).equals(p.getSolutionNotes().get(i))){
+                System.out.println("Note in slot "+i+" is incorrect");
+                return false;
+            }
+        }
+        System.out.println("You solved it! Yay!");
+        return true;
+    }
 
     /**
      * Actors
@@ -183,16 +221,32 @@ public class PuzzleStage extends BaseStage {
                     if(!dragged) Notes.play(note);
                     dragged = false;
                     Vector2 myVector = new Vector2(getX(), getY());
-                    for(Actor ssa : solutionSlotActors.getChildren()){
+                    for(Actor a : solutionSlotActors.getChildren()){
+                        SolutionSlotActor ssa = (SolutionSlotActor) a;
                         Vector2 ssaVector = new Vector2(solutionSlotActors.getX() + ssa.getX(), solutionSlotActors.getY() + ssa.getY());
+                        if(ssa.isOccupied() && ssa.occupiedBy == event.getRelatedActor()){
+                            if(myVector.dst(ssaVector) >= 20){
+                                ssa.evict();
+                            }else{
+                                continue;
+                            }
+                        }
 
+                        // snap into place
                         if(myVector.dst(ssaVector) < 20){
                             moveBy(ssaVector.x - getX(), ssaVector.y - getY());
+                            ssa.occupy((NotePieceActor) event.getTarget());
+                            clickDown.play(1.0f, 0.8f, 1.0f);
+                            clickDown.play(1.0f, 1.0f, 1.0f);
                             break;
                         }
                     }
                 }
             });
+        }
+
+        public Note getNote() {
+            return note;
         }
 
         public NotePieceActor(NotePieceOrientation orientation, final Note note){
@@ -237,16 +291,20 @@ public class PuzzleStage extends BaseStage {
         }
     }
 
-    public static class SolutionSlotActor extends Actor{
-        static final Texture outlines = new Texture(Gdx.files.internal("note_pieces_together_outlines.png"));
-        static final TextureRegion
+    public class SolutionSlotActor extends Actor{
+        // static final Texture outlines = new Texture(Gdx.files.internal("note_pieces_together_outlines.png"));
+        final TextureRegion
                 left = new TextureRegion(outlines, 0, 184, 58, 46),
                 middle = new TextureRegion(outlines, 0, 138, 58, 46),
                 right = new TextureRegion(outlines, 0, 92, 52, 46);
 
+        NotePieceActor occupiedBy = null;
+        final Integer solutionSlot;
+
         NotePieceOrientation orientation;
-        public SolutionSlotActor(NotePieceOrientation orientation){
+        public SolutionSlotActor(NotePieceOrientation orientation, Integer solutionSlot){
             this.orientation = orientation;
+            this.solutionSlot = solutionSlot;
         }
 
         @Override
@@ -270,6 +328,19 @@ public class PuzzleStage extends BaseStage {
             }
             setSize(tr.getRegionWidth(), tr.getRegionHeight());
             batch.draw(tr, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+        }
+
+        public void occupy(NotePieceActor notePieceActor){
+            this.occupiedBy = notePieceActor;
+            checkSolved();
+        }
+
+        public void evict(){
+            this.occupiedBy = null;
+        }
+
+        public boolean isOccupied(){
+            return this.occupiedBy != null;
         }
     }
 
