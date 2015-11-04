@@ -25,7 +25,7 @@ public class PuzzleStage extends BaseStage {
     Group solutionSlotActors;
     Group notePieceActors;
     Puzzle p;
-    Sound clickUp, clickDown;
+    Sound clickUp, clickDown, pop;
 
     final Texture outlines = new Texture(Gdx.files.internal("note_pieces_together_outlines.png"));
 
@@ -35,6 +35,7 @@ public class PuzzleStage extends BaseStage {
         // load sounds
         clickDown = Gdx.audio.newSound(Gdx.files.internal("click_down.mp3"));
         clickUp = Gdx.audio.newSound(Gdx.files.internal("click_up.mp3"));
+        pop = Gdx.audio.newSound(Gdx.files.internal("pop.mp3"));
 
         p = new Puzzle(Puzzle.RangeDifficulty.easy, Puzzle.NoteDiversity.low);
 
@@ -212,19 +213,24 @@ public class PuzzleStage extends BaseStage {
                 public void touchDragged(InputEvent event, float x, float y, int pointer) {
                     super.touchDragged(event, x, y, pointer);
                     moveBy(x - getWidth() / 2, y - getHeight() / 2);
+                    if(!dragged && notePieceActorIsInASolutionSlot((NotePieceActor) event.getTarget())){
+                        pop.play();
+                    }
                     dragged = true;
                 }
 
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     super.touchUp(event, x, y, pointer, button);
-                    if(!dragged) Notes.play(note);
+                    if(!dragged){
+                        Notes.play(note);
+                    }
                     dragged = false;
                     Vector2 myVector = new Vector2(getX(), getY());
                     for(Actor a : solutionSlotActors.getChildren()){
                         SolutionSlotActor ssa = (SolutionSlotActor) a;
                         Vector2 ssaVector = new Vector2(solutionSlotActors.getX() + ssa.getX(), solutionSlotActors.getY() + ssa.getY());
-                        if(ssa.isOccupied() && ssa.occupiedBy == event.getRelatedActor()){
+                        if(ssa.isOccupied() && ssa.occupiedBy == event.getTarget()){
                             if(myVector.dst(ssaVector) >= 20){
                                 ssa.evict();
                             }else{
@@ -243,6 +249,14 @@ public class PuzzleStage extends BaseStage {
                     }
                 }
             });
+        }
+
+        public boolean notePieceActorIsInASolutionSlot(NotePieceActor npa){
+            for(Actor a : solutionSlotActors.getChildren()){
+                SolutionSlotActor ssa = (SolutionSlotActor) a;
+                if(ssa.isOccupied() && ssa.occupiedBy.equals(npa)) return true;
+            }
+            return false;
         }
 
         public Note getNote() {
