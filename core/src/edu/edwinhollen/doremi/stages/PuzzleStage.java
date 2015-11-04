@@ -213,8 +213,10 @@ public class PuzzleStage extends BaseStage {
                 public void touchDragged(InputEvent event, float x, float y, int pointer) {
                     super.touchDragged(event, x, y, pointer);
                     moveBy(x - getWidth() / 2, y - getHeight() / 2);
-                    if(!dragged && notePieceActorIsInASolutionSlot((NotePieceActor) event.getTarget())){
+                    NotePieceActor npa = (NotePieceActor) event.getTarget();
+                    if(!dragged && notePieceActorIsInASolutionSlot(npa)){
                         pop.play();
+                        evictNotePieceFromSolutionSlot(npa);
                     }
                     dragged = true;
                 }
@@ -257,6 +259,16 @@ public class PuzzleStage extends BaseStage {
                 if(ssa.isOccupied() && ssa.occupiedBy.equals(npa)) return true;
             }
             return false;
+        }
+
+        public void evictNotePieceFromSolutionSlot(NotePieceActor npa){
+            for(Actor a : solutionSlotActors.getChildren()){
+                SolutionSlotActor ssa = (SolutionSlotActor) a;
+                if(ssa.isOccupied() && ssa.occupiedBy.equals(npa)){
+                    ssa.evict();
+                    return;
+                }
+            }
         }
 
         public Note getNote() {
@@ -351,6 +363,7 @@ public class PuzzleStage extends BaseStage {
 
         public void evict(){
             this.occupiedBy = null;
+            System.out.println("eviction");
         }
 
         public boolean isOccupied(){
