@@ -25,7 +25,7 @@ public class PuzzleStage extends BaseStage {
     Group solutionSlotActors;
     Group notePieceActors;
     Puzzle p;
-    Sound clickUp, clickDown, pop;
+    Sound clickUp, clickDown, pop, yeah;
 
     final Texture outlines = new Texture(Gdx.files.internal("note_pieces_together_outlines.png"));
 
@@ -36,6 +36,7 @@ public class PuzzleStage extends BaseStage {
         clickDown = Gdx.audio.newSound(Gdx.files.internal("click_down.mp3"));
         clickUp = Gdx.audio.newSound(Gdx.files.internal("click_up.mp3"));
         pop = Gdx.audio.newSound(Gdx.files.internal("pop.mp3"));
+        yeah = Gdx.audio.newSound(Gdx.files.internal("yeah.mp3"));
 
         p = new Puzzle(Puzzle.RangeDifficulty.easy, Puzzle.NoteDiversity.low);
 
@@ -87,7 +88,7 @@ public class PuzzleStage extends BaseStage {
             }
 
             actorToAdd = new NotePieceActor(orientation, solutionNotes.get(i), i);
-            actorToAdd.setPosition(viewport.getWorldWidth() / 2 + Pick.integer(-40, 40), viewport.getWorldHeight() / 2 + Pick.integer(-40, 40));
+            actorToAdd.setPosition(viewport.getWorldWidth() / 2 + Pick.integer(-40, 40), viewport.getWorldHeight() / 2 - Pick.integer(70));
             actorToAdd.addAction(Actions.moveBy(Pick.integer(-30, 30), Pick.integer(-30, 30), 1.0f, Interpolation.fade));
             actorToAdd.setZIndex(0);
             notePieceActors.addActor(actorToAdd);
@@ -96,7 +97,7 @@ public class PuzzleStage extends BaseStage {
         // add extra notes actors
         for(Note extraNote : p.getExtraNotes()){
             NotePieceActor extra = new NotePieceActor(Pick.pick(NotePieceOrientation.values()), extraNote);
-            extra.setPosition(viewport.getWorldWidth() / 2 + Pick.integer(-40, 40), viewport.getWorldHeight() / 2 + Pick.integer(-40, 40));
+            extra.setPosition(viewport.getWorldWidth() / 2 + Pick.integer(-40, 40), viewport.getWorldHeight() / 2 - Pick.integer(70));
             extra.setZIndex(0);
             extra.addAction(Actions.moveBy(Pick.integer(-30, 30), Pick.integer(-30, 30), 1.0f, Interpolation.fade));
             notePieceActors.addActor(extra);
@@ -132,6 +133,7 @@ public class PuzzleStage extends BaseStage {
             }
         }
         System.out.println("You solved it! Yay!");
+        yeah.play();
         return true;
     }
 
@@ -143,8 +145,7 @@ public class PuzzleStage extends BaseStage {
         boolean isDown = false;
         private Texture tx = new Texture(Gdx.files.internal("button_hear.png"));
         private TextureRegion
-            regionUp = new TextureRegion(tx, 0, 0, 51, 56),
-            regionDown = new TextureRegion(tx, 0, 56, 51, 56);
+            regionUp = new TextureRegion(tx, 0, 0, tx.getWidth(), tx.getHeight());
 
         public ListenButtonActor(){
             setSize(regionUp.getRegionWidth(), regionUp.getRegionHeight());
@@ -152,7 +153,6 @@ public class PuzzleStage extends BaseStage {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     super.touchDown(event, x, y, pointer, button);
-                    isDown = true;
                     for(int i = 0; i < p.getSolutionNotes().size(); i++){
                         final int finalI = i;
                         Timer.schedule(new Timer.Task() {
@@ -175,7 +175,7 @@ public class PuzzleStage extends BaseStage {
 
         @Override
         public void draw(Batch batch, float parentAlpha) {
-            TextureRegion tr = isDown ? regionDown : regionUp;
+            TextureRegion tr = regionUp;
             batch.draw(tr, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
 
         }
