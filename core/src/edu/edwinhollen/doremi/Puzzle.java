@@ -75,6 +75,29 @@ public class Puzzle {
 
         // TODO: fix this, needs to build a list of notes not in the solution and pick from that
         extraNotes = new LinkedList<>();
+        List<Note> extraNotesPool = new LinkedList<>();
+        for(Note note : Scale.chromatic){
+            boolean canUse = true;
+            for(Note solutionNote : solutionNotes){
+                if(note.equalsIgnoreOctave(solutionNote)){
+                    canUse = false;
+                    break;
+                }
+            }
+            if(canUse){
+                extraNotesPool.add(note);
+            }
+        }
+
+        while(extraNotes.size() < 4){
+            int i = Pick.integer(extraNotesPool.size()-1);
+            Note noteToAdd = extraNotesPool.get(i);
+            noteToAdd.octave = Pick.integer(OCTAVE_MIN, OCTAVE_MAX);
+            extraNotes.add(noteToAdd);
+            extraNotesPool.remove(i);
+        }
+
+        /*
         while(extraNotes.size() < 4){
             Note candidate = Pick.pick(Scale.chromatic);
             boolean canUse = true;
@@ -89,6 +112,9 @@ public class Puzzle {
                 extraNotes.add(candidate);
             }
         }
+        */
+
+
     }
 
     public List<Note> getSolutionNotes(){
