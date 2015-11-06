@@ -96,25 +96,6 @@ public class Puzzle {
             extraNotes.add(noteToAdd);
             extraNotesPool.remove(i);
         }
-
-        /*
-        while(extraNotes.size() < 4){
-            Note candidate = Pick.pick(Scale.chromatic);
-            boolean canUse = true;
-            for(Note solutionNote : solutionNotes){
-                if(candidate.equalsIgnoreOctave(solutionNote)){
-                    canUse = false;
-                    break;
-                }
-            }
-            if(canUse){
-                candidate.octave = Pick.integer(OCTAVE_MIN, OCTAVE_MAX);
-                extraNotes.add(candidate);
-            }
-        }
-        */
-
-
     }
 
     public List<Note> getSolutionNotes(){
