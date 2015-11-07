@@ -134,6 +134,12 @@ public class PuzzleStage extends BaseStage {
         }
         System.out.println("You solved it! Yay!");
         yeah.play();
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                DoReMi.changeStage(PuzzleStage.class);
+            }
+        }, 5.0f);
         return true;
     }
 
