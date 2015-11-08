@@ -12,8 +12,8 @@ import java.util.Map;
 public class Options {
 
     // defaults
-    final static OptionsEntry NOTE_DIVERSITY = new OptionsEntry("note_diversity", Puzzle.NoteDiversity.low.toString());
-    final static OptionsEntry RANGE_DIFFICULTY = new OptionsEntry("range_difficulty", Puzzle.RangeDifficulty.easy.toString());
+    public final static OptionsEntry NOTE_DIVERSITY = new OptionsEntry("note_diversity", Puzzle.NoteDiversity.low.toString());
+    public final static OptionsEntry RANGE_DIFFICULTY = new OptionsEntry("range_difficulty", Puzzle.RangeDifficulty.easy.toString());
 
     private Preferences preferences;
 
