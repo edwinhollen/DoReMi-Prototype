@@ -29,7 +29,7 @@ public class Options {
     }
 
     public void setRangeDifficulty(Puzzle.RangeDifficulty newRangeDifficulty){
-        this.preferences.putString("range_difficulty", newRangeDifficulty.toString());
+        this.preferences.putString(RANGE_DIFFICULTY.getKey(), newRangeDifficulty.toString());
     }
 
     public Puzzle.RangeDifficulty getRangeDifficulty(){
@@ -40,7 +40,7 @@ public class Options {
     }
 
     public void setNoteDiversity(Puzzle.NoteDiversity newNoteDiversity){
-        this.preferences.putString("note_diversity", newNoteDiversity.toString());
+        this.preferences.putString(NOTE_DIVERSITY.getKey(), newNoteDiversity.toString());
     }
 
     protected static class OptionsEntry implements Map.Entry{
