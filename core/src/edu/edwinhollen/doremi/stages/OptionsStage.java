@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import edu.edwinhollen.doremi.ButtonActor;
 import edu.edwinhollen.doremi.DoReMi;
+import edu.edwinhollen.doremi.PlusButtonActor;
 
 /**
  * Created by Edwin on 10/22/15
@@ -12,6 +13,7 @@ public class OptionsStage extends BaseStage {
     private Options options;
 
     ButtonActor noteDiversityButton, rangeDifficultyButton;
+    PlusButtonActor noteDiversityUp, rangeDifficultyUp;
 
     public OptionsStage(Viewport viewport, Batch batch) {
         super(viewport, batch, DoReMi.Palette.green);
@@ -25,5 +27,17 @@ public class OptionsStage extends BaseStage {
         });
         noteDiversityButton.setPosition(getViewport().getWorldWidth()/2 - noteDiversityButton.getWidth() / 2, 0);
         addActor(noteDiversityButton);
+
+        noteDiversityUp = new PlusButtonActor(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("note diversity up");
+            }
+        });
+
+        noteDiversityUp.setPosition(40, 40);
+        addActor(noteDiversityUp);
+
+
     }
 }
