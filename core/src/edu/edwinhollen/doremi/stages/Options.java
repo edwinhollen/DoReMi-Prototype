@@ -12,13 +12,17 @@ import java.util.Map;
 public class Options {
 
     // defaults
-    public final static OptionsEntry NOTE_DIVERSITY = new OptionsEntry("note_diversity", Puzzle.NoteDiversity.low.toString());
-    public final static OptionsEntry RANGE_DIFFICULTY = new OptionsEntry("range_difficulty", Puzzle.RangeDifficulty.easy.toString());
+    public final OptionsEntry NOTE_DIVERSITY = new OptionsEntry("note_diversity", Puzzle.NoteDiversity.low.toString());
+    public final OptionsEntry RANGE_DIFFICULTY = new OptionsEntry("range_difficulty", Puzzle.RangeDifficulty.easy.toString());
 
     private Preferences preferences;
 
     public Options(){
         this.preferences = Gdx.app.getPreferences("DoReMi");
+    }
+
+    public void save(){
+        this.preferences.flush();
     }
 
     public Puzzle.NoteDiversity getNoteDiversity(){
@@ -79,7 +83,7 @@ public class Options {
         return false;
     }
 
-    protected static class OptionsEntry implements Map.Entry{
+    protected class OptionsEntry implements Map.Entry{
         private String key;
         private String value;
 

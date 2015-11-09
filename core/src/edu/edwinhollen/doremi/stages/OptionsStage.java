@@ -55,6 +55,7 @@ public class OptionsStage extends BaseStage {
                     }
                     noteDiversityValueLabel.text = options.getNoteDiversity().toString();
                     noteDiversityValueLabel.addAction(Actions.sequence(Actions.moveBy(0, -5f, 0.1f), Actions.moveBy(0, 5f, 0.1f)));
+                    options.save();
                 }
             });
             noteDiversityDown.setPosition(minusButtonX, noteDiversityLabel.getY() + buttonAlignYAdjustment);
@@ -69,6 +70,7 @@ public class OptionsStage extends BaseStage {
                     }
                     noteDiversityValueLabel.text = options.getNoteDiversity().toString();
                     noteDiversityValueLabel.addAction(Actions.sequence(Actions.moveBy(0, 5f, 0.1f), Actions.moveBy(0, -5f, 0.1f)));
+                    options.save();
                 }
             });
             noteDiversityUp.setPosition(plusButtonX, noteDiversityLabel.getY() + buttonAlignYAdjustment);
@@ -97,6 +99,7 @@ public class OptionsStage extends BaseStage {
                     }
                     rangeDifficultyValueLabel.text = options.getRangeDifficulty().toString();
                     rangeDifficultyValueLabel.addAction(Actions.sequence(Actions.moveBy(0, -5f, 0.1f), Actions.moveBy(0, 5f, 0.1f)));
+                    options.save();
                 }
             });
             rangeDifficultyDown.setPosition(minusButtonX, rangeDifficultyLabel.getY()+buttonAlignYAdjustment);
@@ -111,6 +114,7 @@ public class OptionsStage extends BaseStage {
                     }
                     rangeDifficultyValueLabel.text = options.getRangeDifficulty().toString();
                     rangeDifficultyValueLabel.addAction(Actions.sequence(Actions.moveBy(0, 5f, 0.1f), Actions.moveBy(0, -5f, 0.1f)));
+                    options.save();
                 }
             });
             rangeDifficultyUp.setPosition(plusButtonX, rangeDifficultyLabel.getY()+buttonAlignYAdjustment);
