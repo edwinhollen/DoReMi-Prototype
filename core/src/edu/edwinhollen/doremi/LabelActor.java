@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * Created by Edwin on 10/22/15
  */
 public class LabelActor extends Actor {
-    String text;
+    public String text;
     int align;
     public LabelActor(String text, Color color, int align){
         this.text = text;

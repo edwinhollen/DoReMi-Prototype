@@ -36,11 +36,47 @@ public class Options {
         if(!this.preferences.contains(RANGE_DIFFICULTY.getKey())){
             this.preferences.putString(RANGE_DIFFICULTY.getKey(), RANGE_DIFFICULTY.getValue());
         }
-        return Puzzle.RangeDifficulty.valueOf(this.preferences.getString(NOTE_DIVERSITY.getKey()));
+        return Puzzle.RangeDifficulty.valueOf(this.preferences.getString(RANGE_DIFFICULTY.getKey()));
     }
 
     public void setNoteDiversity(Puzzle.NoteDiversity newNoteDiversity){
         this.preferences.putString(NOTE_DIVERSITY.getKey(), newNoteDiversity.toString());
+    }
+
+    public boolean increaseNoteDiversity(){
+        int current = Puzzle.NoteDiversity.valueOf(getNoteDiversity().toString()).ordinal();
+        if(current < Puzzle.NoteDiversity.values().length - 1){
+            this.preferences.putString(NOTE_DIVERSITY.getKey(), Puzzle.NoteDiversity.values()[current + 1].toString());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean decreaseNoteDiversity(){
+        int current = Puzzle.NoteDiversity.valueOf(getNoteDiversity().toString()).ordinal();
+        if(current > 0){
+            this.preferences.putString(NOTE_DIVERSITY.getKey(), Puzzle.NoteDiversity.values()[current - 1].toString());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean increaseRangeDifficulty(){
+        int current = Puzzle.RangeDifficulty.valueOf(getRangeDifficulty().toString()).ordinal();
+        if(current < Puzzle.RangeDifficulty.values().length - 1){
+            this.preferences.putString(RANGE_DIFFICULTY.getKey(), Puzzle.RangeDifficulty.values()[current + 1].toString());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean decreaseRangeDifficulty(){
+        int current = Puzzle.RangeDifficulty.valueOf(getRangeDifficulty().toString()).ordinal();
+        if(current > 0){
+            this.preferences.putString(RANGE_DIFFICULTY.getKey(), Puzzle.RangeDifficulty.values()[current - 1].toString());
+            return true;
+        }
+        return false;
     }
 
     protected static class OptionsEntry implements Map.Entry{
