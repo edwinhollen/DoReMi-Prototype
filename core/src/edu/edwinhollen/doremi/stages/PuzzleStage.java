@@ -29,6 +29,12 @@ public class PuzzleStage extends BaseStage {
 
     final Texture outlines = new Texture(Gdx.files.internal("note_pieces_together_outlines.png"));
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        Notes.dispose();
+    }
+
     public PuzzleStage(Viewport viewport, Batch batch) {
         super(viewport, batch, DoReMi.Palette.gray);
 
@@ -134,6 +140,18 @@ public class PuzzleStage extends BaseStage {
         }
         System.out.println("You solved it! Yay!");
         yeah.play();
+
+        for(int i = 0; i < solutionSlotActors.getChildren().size; i++){
+            final SolutionSlotActor ssa = (SolutionSlotActor) solutionSlotActors.getChildren().get(i);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    ssa.occupiedBy.addAction(Actions.forever(Actions.sequence(Actions.moveBy(0, 5f, 0.25f), Actions.moveBy(0, -5f, 0.25f))));
+                }
+            }, 0.2f * i);
+
+        }
+
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
