@@ -23,7 +23,7 @@ public class Pick {
     public static <E> List<E> pick(List<E> list, Integer howMany){
         List<E> returnList = new LinkedList<>();
         Collections.shuffle(list, r);
-        returnList.addAll(list.subList(0, howMany - 1));
+        returnList.addAll(list.subList(0, howMany));
         return returnList;
     }
 

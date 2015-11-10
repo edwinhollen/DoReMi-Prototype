@@ -1,5 +1,7 @@
 package edu.edwinhollen.doremi;
 
+import edu.edwinhollen.doremi.stages.Options;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +17,8 @@ public class Puzzle {
     final Note solutionRootNote;
     final ScalePattern solutionScalePattern;
     final List<Note> solutionNotes, extraNotes;
+
+    private Options options;
 
     /**
      * Debug purposes
@@ -33,6 +37,8 @@ public class Puzzle {
     public Puzzle(RangeDifficulty rd, NoteDiversity nd){
         this.rangeDifficulty = rd;
         this.noteDiversity = nd;
+
+        System.out.println(String.format("Creating a puzzle range difficulty %s, note diversity %s", rd.toString(), nd.toString()));
 
         // Determine start and end octaves
         int octaveStart, octaveEnd;
@@ -73,7 +79,6 @@ public class Puzzle {
             }
         }
 
-        // TODO: fix this, needs to build a list of notes not in the solution and pick from that
         extraNotes = new LinkedList<>();
         List<Note> extraNotesPool = new LinkedList<>();
         for(Note note : Scale.chromatic){

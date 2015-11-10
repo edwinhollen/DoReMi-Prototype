@@ -27,6 +27,8 @@ public class PuzzleStage extends BaseStage {
     Puzzle p;
     Sound clickUp, clickDown, pop, yeah;
 
+    Options options;
+
     final Texture outlines = new Texture(Gdx.files.internal("note_pieces_together_outlines.png"));
 
     @Override
@@ -44,7 +46,9 @@ public class PuzzleStage extends BaseStage {
         pop = Gdx.audio.newSound(Gdx.files.internal("pop.mp3"));
         yeah = Gdx.audio.newSound(Gdx.files.internal("yeah.mp3"));
 
-        p = new Puzzle(Puzzle.RangeDifficulty.easy, Puzzle.NoteDiversity.low);
+        this.options = new Options();
+
+        p = new Puzzle(this.options.getRangeDifficulty(), this.options.getNoteDiversity());
 
         System.out.println(p.toString());
 
