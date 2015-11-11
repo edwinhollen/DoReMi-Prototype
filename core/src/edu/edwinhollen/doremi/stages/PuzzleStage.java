@@ -14,8 +14,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import edu.edwinhollen.doremi.*;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Edwin on 10/22/15
@@ -48,8 +47,8 @@ public class PuzzleStage extends BaseStage {
 
         this.options = new Options();
 
-        p = new Puzzle(this.options.getRangeDifficulty(), this.options.getNoteDiversity());
-
+        // p = new Puzzle(this.options.getRangeDifficulty(), this.options.getNoteDiversity());
+        p = new Puzzle(Arrays.asList(new Note("cn0"), new Note("en0")), new LinkedList<Note>());
         System.out.println(p.toString());
 
 
@@ -61,19 +60,19 @@ public class PuzzleStage extends BaseStage {
         // add solution slots
         solutionSlotActors = new Group();
         // slot 0
-        SolutionSlotActor ss0 = new SolutionSlotActor(NotePieceOrientation.left, 0);
+        SolutionSlotActor ss0 = new SolutionSlotActor(NotePieceOrientation.LEFT, 0);
         ss0.setPosition(0, 0);
         solutionSlotActors.addActor(ss0);
         // slot 1
-        SolutionSlotActor ss1 = new SolutionSlotActor(NotePieceOrientation.middle, 1);
+        SolutionSlotActor ss1 = new SolutionSlotActor(NotePieceOrientation.MIDDLE, 1);
         ss1.setPosition(51, 0);
         solutionSlotActors.addActor(ss1);
         // slot 2
-        SolutionSlotActor ss2 = new SolutionSlotActor(NotePieceOrientation.middle, 2);
+        SolutionSlotActor ss2 = new SolutionSlotActor(NotePieceOrientation.MIDDLE, 2);
         ss2.setPosition(102, 0);
         solutionSlotActors.addActor(ss2);
         // slot 3
-        SolutionSlotActor ss3 = new SolutionSlotActor(NotePieceOrientation.right, 3);
+        SolutionSlotActor ss3 = new SolutionSlotActor(NotePieceOrientation.RIGHT, 3);
         ss3.setPosition(153, 0);
         solutionSlotActors.addActor(ss3);
 
@@ -90,11 +89,11 @@ public class PuzzleStage extends BaseStage {
             NotePieceOrientation orientation;
 
             if(i == 0){
-                orientation = NotePieceOrientation.left;
+                orientation = NotePieceOrientation.LEFT;
             }else if(i == solutionNotes.size() - 1){
-                orientation = NotePieceOrientation.right;
+                orientation = NotePieceOrientation.RIGHT;
             }else{
-                orientation = NotePieceOrientation.middle;
+                orientation = NotePieceOrientation.MIDDLE;
             }
 
             actorToAdd = new NotePieceActor(orientation, solutionNotes.get(i), i);
@@ -211,6 +210,7 @@ public class PuzzleStage extends BaseStage {
 
     public class NotePieceActor extends Actor {
         final Texture notePieceTemplate = new Texture(Gdx.files.internal("note_pieces_together.png"));
+        final TextureRegion noteHead = new TextureRegion(new Texture(Gdx.files.internal("note.png")));
         final TextureRegion
             closed_closed = new TextureRegion(notePieceTemplate, 0, 0, 52, 46),
             closed_female = new TextureRegion(notePieceTemplate, 0, 46, 52, 46),
@@ -316,13 +316,13 @@ public class PuzzleStage extends BaseStage {
         public void draw(Batch batch, float parentAlpha) {
             TextureRegion tr;
             switch(this.orientation){
-                case left:
+                case LEFT:
                     tr = closed_male;
                     break;
-                case middle:
+                case MIDDLE:
                     tr = female_male;
                     break;
-                case right:
+                case RIGHT:
                     tr = female_closed;
                     break;
                 default:
@@ -339,6 +339,8 @@ public class PuzzleStage extends BaseStage {
 
             batch.setColor(1, 1, 1, 1);
             batch.draw(tr, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+
+            // batch.draw(noteHead, getX() + 8, ((getY() + 4) + Scale.indexOf(note) % 2 + Scale.indexOf(note) * 2) - noteHead.getRegionHeight() / 2, getOriginX(), getOriginY(), noteHead.getRegionWidth(), noteHead.getRegionHeight(), getScaleX(), getScaleY(), getRotation());
 
             DoReMi.Fonts.normal.setColor(DoReMi.Palette.black);
             DoReMi.Fonts.normal.draw(batch, this.note.toString(), getX() + getWidth() / 2 - 10, getY() + getHeight() / 2, getWidth(), Align.center, false);
@@ -370,10 +372,10 @@ public class PuzzleStage extends BaseStage {
         public void draw(Batch batch, float parentAlpha) {
             TextureRegion tr;
             switch(this.orientation){
-                case left:
+                case LEFT:
                     tr = left;
                     break;
-                case middle:
+                case MIDDLE:
                     tr = middle;
                     break;
                 default:
@@ -399,9 +401,4 @@ public class PuzzleStage extends BaseStage {
         }
     }
 
-    public enum NotePieceOrientation{
-        left,
-        middle,
-        right
-    }
 }

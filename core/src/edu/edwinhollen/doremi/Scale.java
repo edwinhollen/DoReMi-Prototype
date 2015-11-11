@@ -9,21 +9,6 @@ import java.util.List;
  */
 public class Scale {
 
-    public static final List<Note> chromatic = Arrays.asList(
-        new Note(NoteName.c, Accidental.natural),
-        new Note(NoteName.c, Accidental.sharp),
-        new Note(NoteName.d, Accidental.natural),
-        new Note(NoteName.e, Accidental.flat),
-        new Note(NoteName.e, Accidental.natural),
-        new Note(NoteName.f, Accidental.natural),
-        new Note(NoteName.f, Accidental.sharp),
-        new Note(NoteName.g, Accidental.natural),
-        new Note(NoteName.a, Accidental.flat),
-        new Note(NoteName.a, Accidental.natural),
-        new Note(NoteName.b, Accidental.flat),
-        new Note(NoteName.b, Accidental.natural)
-    );
-
     private Integer currentOctave = null;
     private Integer currentNoteIndex = null;
     private Integer currentPatternIndex = 0;
@@ -31,26 +16,25 @@ public class Scale {
 
     private List<Note> notes = new LinkedList<>();
 
-    public Scale(Note rootNote, ScalePattern pattern){
-        this.currentOctave = rootNote.octave;
+    public Scale(Chromatic rootNote, Integer rootOctave, ScalePattern pattern){
+        this.currentOctave = rootOctave;
         this.pattern = pattern;
 
         currentNoteIndex = 0;
-        while(!chromatic.get(currentNoteIndex).equalsIgnoreOctave(rootNote)){
+        while(!Chromatic.values()[currentNoteIndex].equals(rootNote)){
             currentNoteIndex++;
         }
 
         while(this.notes.size() < 8){
             this.notes.add(new Note(
-                    chromatic.get(this.currentNoteIndex).note,
-                    chromatic.get(this.currentNoteIndex).accidental,
+                    Chromatic.values()[this.currentNoteIndex],
                     this.currentOctave
             ));
             this.currentPatternIndex++;
             this.currentNoteIndex += this.pattern.scaleSteps.get(currentPatternIndex % this.pattern.scaleSteps.size());
-            if(this.currentNoteIndex >= chromatic.size()){
+            if(this.currentNoteIndex >= Chromatic.values().length){
                 this.currentOctave++;
-                this.currentNoteIndex = this.currentNoteIndex % chromatic.size();
+                this.currentNoteIndex = this.currentNoteIndex % Chromatic.values().length;
             }
         }
     }

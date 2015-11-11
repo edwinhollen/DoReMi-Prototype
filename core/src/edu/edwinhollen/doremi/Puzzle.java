@@ -58,39 +58,38 @@ public class Puzzle {
         }
 
         // Set solution notes
-        solutionRootNote = Pick.pick(Scale.chromatic);
-        solutionRootNote.octave = Pick.integer(octaveStart, octaveEnd);
+        solutionRootNote = new Note(Pick.pick(Chromatic.values()), Pick.integer(octaveStart, octaveEnd));
 
         switch(this.noteDiversity){
             case medium: {
                 solutionScalePattern = Pick.pick(ScalePatterns.major, ScalePatterns.minor);
-                solutionNotes = Pick.pick(new Scale(solutionRootNote, solutionScalePattern).getNotes(), 4);
+                solutionNotes = Pick.pick(new Scale(solutionRootNote.chromatic, solutionRootNote.octave, solutionScalePattern).getNotes(), 4);
                 break;
             }
             case high: {
                 solutionScalePattern = ScalePatterns.chromatic;
-                solutionNotes = Pick.pick(new Scale(solutionRootNote, ScalePatterns.chromatic).getNotes(), 4);
+                solutionNotes = Pick.pick(new Scale(solutionRootNote.chromatic, solutionRootNote.octave, ScalePatterns.chromatic).getNotes(), 4);
                 break;
             }
             default: {
                     solutionScalePattern = ScalePatterns.major;
-                    solutionNotes = new Scale(solutionRootNote, solutionScalePattern).getArpeggio();
+                    solutionNotes = new Scale(solutionRootNote.chromatic, solutionRootNote.octave, solutionScalePattern).getArpeggio();
                     break;
             }
         }
 
         extraNotes = new LinkedList<>();
         List<Note> extraNotesPool = new LinkedList<>();
-        for(Note note : Scale.chromatic){
+        for(Chromatic c : Chromatic.values()){
             boolean canUse = true;
             for(Note solutionNote : solutionNotes){
-                if(note.equalsIgnoreOctave(solutionNote)){
+                if(c.equals(solutionNote.chromatic)){
                     canUse = false;
                     break;
                 }
             }
             if(canUse){
-                extraNotesPool.add(note);
+                extraNotesPool.add(new Note(c, Pick.integer(OCTAVE_MIN, OCTAVE_MAX)));
             }
         }
 

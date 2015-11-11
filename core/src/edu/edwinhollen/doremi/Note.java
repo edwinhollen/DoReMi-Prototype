@@ -4,42 +4,56 @@ package edu.edwinhollen.doremi;
  * Created by Edwin on 10/23/15
  */
 public class Note {
-    NoteName note;
-    Accidental accidental;
-    Integer octave;
+    Integer octave = null;
+    Chromatic chromatic;
 
-    public Note(NoteName note, Accidental accidental, Integer octave){
-        this.note = note;
-        this.accidental = accidental;
+    public Note(Chromatic chromatic, Integer octave){
+        this.chromatic = chromatic;
         this.octave = octave;
-    }
-
-    public Note(NoteName note, Accidental accidental){
-        this(note, accidental, null);
-    }
-
-    public Note(NoteName note){
-        this(note, Accidental.natural);
     }
 
     public Note(String noteString){
         char[] parts = noteString.toLowerCase().toCharArray();
-        Integer parsedOctave = null;
-        NoteName parsedNoteName;
-        Accidental parsedAccidental = Accidental.natural;
-
-        switch(parts.length){
-            case 3:
-                parsedOctave = Integer.parseInt(String.valueOf(parts[2]));
-            case 2:
-                parsedAccidental = Accidental.fromChar(parts[1]);
-            default:
-                parsedNoteName = NoteName.valueOf(String.valueOf(parts[0]));
+        String notePart = String.format("%c%c", parts[0], parts[1]);
+        switch(notePart){
+            case "cn":
+                this.chromatic = Chromatic.C_NATURAL;
+                break;
+            case "c#":
+                this.chromatic = Chromatic.C_SHARP;
+                break;
+            case "dn":
+                this.chromatic = Chromatic.D_NATURAL;
+                break;
+            case "eb":
+                this.chromatic = Chromatic.E_FLAT;
+                break;
+            case "en":
+                this.chromatic = Chromatic.E_NATURAL;
+                break;
+            case "fn":
+                this.chromatic = Chromatic.F_NATURAL;
+                break;
+            case "f#":
+                this.chromatic = Chromatic.F_SHARP;
+                break;
+            case "gn":
+                this.chromatic = Chromatic.G_NATURAL;
+                break;
+            case "ab":
+                this.chromatic = Chromatic.A_FLAT;
+                break;
+            case "an":
+                this.chromatic = Chromatic.A_NATURAL;
+                break;
+            case "bb":
+                this.chromatic = Chromatic.B_FLAT;
+                break;
+            case "bn":
+                this.chromatic = Chromatic.B_NATURAL;
+                break;
         }
-
-        this.note = parsedNoteName;
-        this.accidental = parsedAccidental;
-        this.octave = parsedOctave;
+        this.octave = parts.length > 2 ? Integer.parseInt(Character.toString(parts[2])) : null;
     }
 
     @Override
@@ -50,11 +64,11 @@ public class Note {
     }
 
     public boolean equalsIgnoreOctave(Note otherNote){
-        return otherNote.note.equals(this.note) && otherNote.accidental.equals(this.accidental);
+        return this.chromatic.equals(otherNote.chromatic);
     }
 
     @Override
     public String toString() {
-        return String.format("%s%s%s", this.note.toString(), this.accidental.toString(), this.octave == null ? "" : this.octave.toString());
+        return String.format("%s%s", this.chromatic.toString(), this.octave == null ? "" : this.octave.toString());
     }
 }
