@@ -27,6 +27,8 @@ public class TitleStage extends BaseStage {
     public TitleStage(Viewport viewport, Batch batch){
         super(viewport, batch, DoReMi.Palette.red);
 
+        setBackButton(false);
+
         // load music in a thread
         new Thread(new Runnable() {
             @Override

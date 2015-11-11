@@ -20,7 +20,7 @@ import java.util.*;
  * Created by Edwin on 10/22/15
  */
 public class PuzzleStage extends BaseStage {
-    Actor listenButton;
+    Actor listenButton, backButton;
     Group solutionSlotActors;
     Group notePieceActors;
     Puzzle p;
@@ -47,14 +47,12 @@ public class PuzzleStage extends BaseStage {
 
         this.options = new Options();
 
-        // p = new Puzzle(this.options.getRangeDifficulty(), this.options.getNoteDiversity());
-        p = new Puzzle(Arrays.asList(new Note("cn0"), new Note("en0")), new LinkedList<Note>());
+        p = new Puzzle(this.options.getRangeDifficulty(), this.options.getNoteDiversity());
+        // p = new Puzzle(Arrays.asList(new Note("cn0"), new Note("en0")), new LinkedList<Note>());
         System.out.println(p.toString());
 
-
-
         listenButton = new ListenButtonActor();
-        listenButton.setPosition(16, viewport.getWorldHeight() - listenButton.getHeight() - 16);
+        listenButton.setPosition(32, viewport.getWorldHeight() - listenButton.getHeight() - 16);
         addActor(listenButton);
 
         // add solution slots
@@ -76,7 +74,7 @@ public class PuzzleStage extends BaseStage {
         ss3.setPosition(153, 0);
         solutionSlotActors.addActor(ss3);
 
-        solutionSlotActors.setPosition(72, viewport.getWorldHeight() - 46 - 16);
+        solutionSlotActors.setPosition(108, viewport.getWorldHeight() - 46 - 16);
 
         addActor(solutionSlotActors);
 
