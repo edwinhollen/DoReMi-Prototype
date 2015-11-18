@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import edu.edwinhollen.doremi.DoReMi;
 
@@ -30,6 +27,7 @@ public abstract class BaseStage extends Stage {
 
     protected void setBackButton(boolean bb){
         this.backButton = bb;
+        Gdx.input.setCatchBackKey(bb);
     }
 
     public BaseStage(Viewport viewport, Batch batch, Color backgroundColor) {
@@ -52,9 +50,19 @@ public abstract class BaseStage extends Stage {
                 batch.draw(arrowLeft, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
             }
         };
+
+        addListener(new InputListener(){
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if(backButton && keycode == Input.Keys.BACK){
+                    DoReMi.changeStage(TitleStage.class);
+                }
+                return super.keyDown(event, keycode);
+            }
+        });
         backButtonActor.setSize(arrowLeft.getRegionWidth(), arrowLeft.getRegionHeight());
         backButtonActor.setPosition(0, getViewport().getWorldHeight() - arrowLeft.getRegionHeight());
-        backButtonActor.addListener(new InputListener(){
+        backButtonActor.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 DoReMi.changeStage(TitleStage.class);
@@ -62,6 +70,8 @@ public abstract class BaseStage extends Stage {
             }
         });
         addActor(backButtonActor);
+
+
     }
 
     @Override

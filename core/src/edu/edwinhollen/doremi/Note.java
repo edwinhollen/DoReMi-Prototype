@@ -1,5 +1,8 @@
 package edu.edwinhollen.doremi;
 
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.audio.Sound;
+
 /**
  * Created by Edwin on 10/23/15
  */
@@ -70,5 +73,9 @@ public class Note {
     @Override
     public String toString() {
         return String.format("%s%s", this.chromatic.toString(), this.octave == null ? "" : this.octave.toString());
+    }
+
+    public AssetDescriptor<Sound> getAssetDescriptor(){
+        return new AssetDescriptor<>(String.format("instruments/piano/%s.mp3", this.toString()), Sound.class);
     }
 }

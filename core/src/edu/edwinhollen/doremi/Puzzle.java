@@ -2,6 +2,7 @@ package edu.edwinhollen.doremi;
 
 import edu.edwinhollen.doremi.stages.Options;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -108,6 +109,10 @@ public class Puzzle {
 
     public List<Note> getExtraNotes(){
         return this.extraNotes;
+    }
+
+    public List<Note> getAllNotes(){
+        return new ArrayList<Note>(){{addAll(solutionNotes); addAll(extraNotes);}};
     }
 
     @Override

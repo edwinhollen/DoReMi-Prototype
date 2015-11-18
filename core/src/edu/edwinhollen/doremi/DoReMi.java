@@ -50,8 +50,6 @@ public class DoReMi extends ApplicationAdapter {
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
-
-		Notes.dispose();
 	}
 
 	@Override
@@ -65,7 +63,6 @@ public class DoReMi extends ApplicationAdapter {
 		if(currentStage != null) currentStage.dispose();
 		batch.dispose();
 		Fonts.dispose();
-		Notes.dispose();
 	}
 
 	public static final class Palette{

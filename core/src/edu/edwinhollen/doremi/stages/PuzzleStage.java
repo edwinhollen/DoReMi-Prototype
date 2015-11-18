@@ -1,6 +1,8 @@
 package edu.edwinhollen.doremi.stages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -24,7 +26,8 @@ public class PuzzleStage extends BaseStage {
     Group solutionSlotActors;
     Group notePieceActors;
     Puzzle p;
-    Sound clickUp, clickDown, pop, yeah;
+    AssetDescriptor<Sound> clickUp, clickDown, pop, yeah;
+    AssetManager assetManager;
 
     Options options;
 
@@ -33,23 +36,43 @@ public class PuzzleStage extends BaseStage {
     @Override
     public void dispose() {
         super.dispose();
-        Notes.dispose();
+        assetManager.dispose();
+    }
+
+    @Override
+    public void draw() {
+        if(assetManager.update()) super.draw();
     }
 
     public PuzzleStage(Viewport viewport, Batch batch) {
         super(viewport, batch, DoReMi.Palette.gray);
 
-        // load sounds
-        clickDown = Gdx.audio.newSound(Gdx.files.internal("click_down.mp3"));
-        clickUp = Gdx.audio.newSound(Gdx.files.internal("click_up.mp3"));
-        pop = Gdx.audio.newSound(Gdx.files.internal("pop.mp3"));
-        yeah = Gdx.audio.newSound(Gdx.files.internal("yeah.mp3"));
-
+        // get user options
         this.options = new Options();
 
+        // generate puzzle based on user options
         p = new Puzzle(this.options.getRangeDifficulty(), this.options.getNoteDiversity());
-        // p = new Puzzle(Arrays.asList(new Note("cn0"), new Note("en0")), new LinkedList<Note>());
         System.out.println(p.toString());
+
+        // load sounds
+        assetManager = new AssetManager();
+
+        // load note sounds
+        for(Note n : p.getAllNotes()){
+            assetManager.load(n.getAssetDescriptor());
+        }
+
+        // load ui sounds
+
+        clickDown = new AssetDescriptor<>("click_down.mp3", Sound.class);
+        clickUp = new AssetDescriptor<>("click_up.mp3", Sound.class);
+        pop = new AssetDescriptor<>("pop.mp3", Sound.class);
+        yeah = new AssetDescriptor<>("yeah.mp3", Sound.class);
+
+        assetManager.load(clickDown);
+        assetManager.load(clickUp);
+        assetManager.load(pop);
+        assetManager.load(yeah);
 
         listenButton = new ListenButtonActor();
         listenButton.setPosition(32, viewport.getWorldHeight() - listenButton.getHeight() - 16);
@@ -140,7 +163,7 @@ public class PuzzleStage extends BaseStage {
             }
         }
         System.out.println("You solved it! Yay!");
-        yeah.play();
+        assetManager.get(yeah).play(0.5f);
 
         for(int i = 0; i < solutionSlotActors.getChildren().size; i++){
             final SolutionSlotActor ssa = (SolutionSlotActor) solutionSlotActors.getChildren().get(i);
@@ -183,7 +206,7 @@ public class PuzzleStage extends BaseStage {
                         Timer.schedule(new Timer.Task() {
                             @Override
                             public void run() {
-                                Notes.play(p.getSolutionNotes().get(finalI));
+                                assetManager.get(p.getSolutionNotes().get(finalI).getAssetDescriptor()).play();
                             }
                         }, 0.5f * i);
                     }
@@ -241,7 +264,7 @@ public class PuzzleStage extends BaseStage {
                     moveBy(x - getWidth() / 2, y - getHeight() / 2);
                     NotePieceActor npa = (NotePieceActor) event.getTarget();
                     if(!dragged && notePieceActorIsInASolutionSlot(npa)){
-                        pop.play();
+                        assetManager.get(pop).play();
                         evictNotePieceFromSolutionSlot(npa);
                     }
                     dragged = true;
@@ -251,7 +274,7 @@ public class PuzzleStage extends BaseStage {
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     super.touchUp(event, x, y, pointer, button);
                     if(!dragged){
-                        Notes.play(note);
+                        assetManager.get(note.getAssetDescriptor()).play();
                     }
                     dragged = false;
                     Vector2 myVector = new Vector2(getX(), getY());
@@ -270,8 +293,8 @@ public class PuzzleStage extends BaseStage {
                         if(myVector.dst(ssaVector) < 20){
                             moveBy(ssaVector.x - getX(), ssaVector.y - getY());
                             ssa.occupy((NotePieceActor) event.getTarget());
-                            clickDown.play(1.0f, 0.8f, 1.0f);
-                            clickDown.play(1.0f, 1.0f, 1.0f);
+                            assetManager.get(clickDown).play(1.0f, 0.8f, 1.0f);
+                            assetManager.get(clickDown).play(1.0f, 1.0f, 1.0f);
                             break;
                         }
                     }

@@ -28,6 +28,7 @@ public class Options {
     public Puzzle.NoteDiversity getNoteDiversity(){
         if(!this.preferences.contains(NOTE_DIVERSITY.getKey())){
             this.preferences.putString(NOTE_DIVERSITY.getKey(), NOTE_DIVERSITY.getValue());
+            this.preferences.flush();
         }
         return Puzzle.NoteDiversity.valueOf(this.preferences.getString(NOTE_DIVERSITY.getKey()));
     }
@@ -39,6 +40,7 @@ public class Options {
     public Puzzle.RangeDifficulty getRangeDifficulty(){
         if(!this.preferences.contains(RANGE_DIFFICULTY.getKey())){
             this.preferences.putString(RANGE_DIFFICULTY.getKey(), RANGE_DIFFICULTY.getValue());
+            this.preferences.flush();
         }
         return Puzzle.RangeDifficulty.valueOf(this.preferences.getString(RANGE_DIFFICULTY.getKey()));
     }
