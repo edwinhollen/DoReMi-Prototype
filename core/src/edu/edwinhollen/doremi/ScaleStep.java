@@ -1,13 +1,18 @@
 package edu.edwinhollen.doremi;
 
 /**
- * Created by Edwin on 10/23/15
+ * Created by Edwin on 11/18/15
  */
 public enum ScaleStep {
-    R(0), // root
-    H(1), // half step
-    W(2); // whole step
+    WHOLE(2), HALF(1), WHOLEHALF(3), ROOT(0);
 
-    ScaleStep(int n) {
+    private final int stepSize;
+
+    ScaleStep(int i) {
+        this.stepSize = i;
+    }
+
+    public int getValue() {
+        return stepSize;
     }
 }

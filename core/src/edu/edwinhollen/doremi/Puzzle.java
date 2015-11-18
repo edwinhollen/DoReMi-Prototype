@@ -63,19 +63,19 @@ public class Puzzle {
 
         switch(this.noteDiversity){
             case medium: {
-                solutionScalePattern = Pick.pick(ScalePatterns.major, ScalePatterns.minor);
+                solutionScalePattern = Pick.pick(ScalePattern.MAJOR, ScalePattern.MINOR);
                 solutionNotes = Pick.pick(new Scale(solutionRootNote.chromatic, solutionRootNote.octave, solutionScalePattern).getNotes(), 4);
                 break;
             }
             case high: {
-                solutionScalePattern = ScalePatterns.chromatic;
-                solutionNotes = Pick.pick(new Scale(solutionRootNote.chromatic, solutionRootNote.octave, ScalePatterns.chromatic).getNotes(), 4);
+                solutionScalePattern = ScalePattern.CHROMATIC;
+                solutionNotes = Pick.pick(new Scale(solutionRootNote.chromatic, solutionRootNote.octave, ScalePattern.CHROMATIC).getNotes(), 4);
                 break;
             }
             default: {
-                    solutionScalePattern = ScalePatterns.major;
-                    solutionNotes = new Scale(solutionRootNote.chromatic, solutionRootNote.octave, solutionScalePattern).getArpeggio();
-                    break;
+                solutionScalePattern = ScalePattern.MAJOR;
+                solutionNotes = new Scale(solutionRootNote.chromatic, solutionRootNote.octave, solutionScalePattern).getArpeggio();
+                break;
             }
         }
 

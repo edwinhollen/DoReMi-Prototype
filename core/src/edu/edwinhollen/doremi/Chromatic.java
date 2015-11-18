@@ -4,6 +4,7 @@ package edu.edwinhollen.doremi;
  * Created by Edwin on 11/11/15
  */
 public enum Chromatic {
+    C_NATURAL,
     C_SHARP,
     D_NATURAL,
     E_FLAT,
@@ -14,8 +15,7 @@ public enum Chromatic {
     A_FLAT,
     A_NATURAL,
     B_FLAT,
-    B_NATURAL,
-    C_NATURAL;
+    B_NATURAL;
 
     @Override
     public String toString() {

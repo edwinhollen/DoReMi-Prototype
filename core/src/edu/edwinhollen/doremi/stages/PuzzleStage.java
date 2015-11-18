@@ -52,6 +52,7 @@ public class PuzzleStage extends BaseStage {
 
         // generate puzzle based on user options
         p = new Puzzle(this.options.getRangeDifficulty(), this.options.getNoteDiversity());
+        // p = new Puzzle(new Scale(Chromatic.C_NATURAL, 2, ScalePattern.MINOR).getNotes(), new LinkedList<Note>());
         System.out.println(p.toString());
 
         // load sounds

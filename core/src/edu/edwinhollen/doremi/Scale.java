@@ -9,30 +9,19 @@ import java.util.List;
  */
 public class Scale {
 
-    private final ScalePattern pattern;
     private List<Note> notes = new LinkedList<>();
 
-    public Scale(Chromatic rootNote, Integer rootOctave, ScalePattern pattern){
-        Integer currentOctave = rootOctave;
-        this.pattern = pattern;
+    public Scale(Chromatic rootChromatic, Integer rootOctave, ScalePattern pattern){
+        int currentChromaticIndex = rootChromatic.ordinal();
+        int currentOctave = rootOctave;
 
-        Integer currentNoteIndex = 0;
-        while(!Chromatic.values()[currentNoteIndex].equals(rootNote)){
-            currentNoteIndex++;
-        }
-
-        while(this.notes.size() < 8){
-            this.notes.add(new Note(
-                    Chromatic.values()[currentNoteIndex],
-                    currentOctave
-            ));
-            Integer currentPatternIndex = 0;
-            currentPatternIndex++;
-            currentNoteIndex += this.pattern.scaleSteps.get(currentPatternIndex % this.pattern.scaleSteps.size());
-            if(currentNoteIndex >= Chromatic.values().length){
-                currentOctave++;
-                currentNoteIndex = currentNoteIndex % Chromatic.values().length;
+        for(int patternIndex = 0; patternIndex < pattern.getValue().length; patternIndex++){
+            currentChromaticIndex += pattern.getValue()[patternIndex].getValue();
+            if(currentChromaticIndex >= Chromatic.values().length){
+                currentChromaticIndex = currentChromaticIndex % Chromatic.values().length;
+                currentOctave += 1;
             }
+            this.notes.add(new Note(Chromatic.values()[currentChromaticIndex], currentOctave));
         }
     }
 
