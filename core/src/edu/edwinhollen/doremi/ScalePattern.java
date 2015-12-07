@@ -10,8 +10,8 @@ public enum ScalePattern {
 
     MAJOR(ScaleStep.ROOT, ScaleStep.WHOLE, ScaleStep.WHOLE, ScaleStep.HALF, ScaleStep.WHOLE, ScaleStep.WHOLE, ScaleStep.WHOLE, ScaleStep.HALF),
     MINOR(ScaleStep.ROOT, ScaleStep.WHOLE, ScaleStep.HALF, ScaleStep.WHOLE, ScaleStep.WHOLE, ScaleStep.WHOLE, ScaleStep.WHOLE, ScaleStep.HALF),
-    DORIAN,
-    CHROMATIC;
+    DORIAN(ScaleStep.ROOT, ScaleStep.WHOLE, ScaleStep.HALF, ScaleStep.WHOLE, ScaleStep.WHOLE, ScaleStep.WHOLE, ScaleStep.HALF, ScaleStep.WHOLE),
+    CHROMATIC(ScaleStep.ROOT, ScaleStep.HALF, ScaleStep.HALF, ScaleStep.HALF, ScaleStep.HALF, ScaleStep.HALF, ScaleStep.HALF, ScaleStep.HALF, ScaleStep.HALF, ScaleStep.HALF, ScaleStep.HALF, ScaleStep.HALF);
 
     private final ScaleStep[] steps;
     ScalePattern(ScaleStep... steps){
