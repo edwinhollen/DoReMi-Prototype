@@ -69,7 +69,7 @@ public class Puzzle {
             }
             case high: {
                 solutionScalePattern = ScalePattern.CHROMATIC;
-                solutionNotes = Pick.pick(new Scale(solutionRootNote.chromatic, solutionRootNote.octave, ScalePattern.CHROMATIC).getNotes(), 4);
+                solutionNotes = Pick.pick(new Scale(solutionRootNote.chromatic, solutionRootNote.octave, Pick.pick(ScalePattern.CHROMATIC, ScalePattern.DORIAN)).getNotes(), 4);
                 break;
             }
             default: {
