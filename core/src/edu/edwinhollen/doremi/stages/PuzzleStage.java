@@ -198,10 +198,12 @@ public class PuzzleStage extends BaseStage {
 
         public ListenButtonActor(){
             setSize(regionUp.getRegionWidth(), regionUp.getRegionHeight());
+            setOrigin(Align.center);
             addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     super.touchDown(event, x, y, pointer, button);
+                    addAction(Actions.repeat(3, Actions.sequence(Actions.rotateTo(-5f, 0.2f), Actions.rotateTo(5f, 0.2f), Actions.rotateTo(0f, 0.1f))));
                     for(int i = 0; i < p.getSolutionNotes().size(); i++){
                         final int finalI = i;
                         Timer.schedule(new Timer.Task() {
@@ -276,6 +278,7 @@ public class PuzzleStage extends BaseStage {
                     super.touchUp(event, x, y, pointer, button);
                     if(!dragged){
                         assetManager.get(note.getAssetDescriptor()).play();
+                        addAction(Actions.sequence(Actions.scaleTo(0.9f, 0.9f, 0.05f), Actions.scaleTo(1.0f, 1.0f, 0.2f)));
                     }
                     dragged = false;
                     Vector2 myVector = new Vector2(getX(), getY());
