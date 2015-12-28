@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Edwin on 10/24/15
  */
 public class Puzzle {
-    final static int OCTAVE_MIN = 1, OCTAVE_MAX = 3;
+    final static int OCTAVE_MIN = 2, OCTAVE_MAX = 3;
 
     final RangeDifficulty rangeDifficulty;
     final NoteDiversity noteDiversity;

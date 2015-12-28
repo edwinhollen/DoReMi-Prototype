@@ -53,7 +53,12 @@ public class PuzzleStage extends BaseStage {
         this.options = new Options();
 
         // generate puzzle based on user options
-        p = new Puzzle(this.options.getRangeDifficulty(), this.options.getNoteDiversity());
+        // p = new Puzzle(this.options.getRangeDifficulty(), this.options.getNoteDiversity());
+        List<Note> testNotes = new LinkedList<>();
+        for(Chromatic c : Chromatic.values()){
+            testNotes.add(new Note(c, 2));
+        }
+        p = new Puzzle(testNotes, new LinkedList<Note>());
         // p = new Puzzle(new Scale(Chromatic.C_NATURAL, 2, ScalePattern.MINOR).getNotes(), new LinkedList<Note>());
         System.out.println(p.toString());
 
@@ -382,9 +387,76 @@ public class PuzzleStage extends BaseStage {
             batch.draw(tr, Math.round(getX()), Math.round(getY()), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
 
             // batch.draw(noteHead, getX() + 8, ((getY() + 4) + Scale.indexOf(note) % 2 + Scale.indexOf(note) * 2) - noteHead.getRegionHeight() / 2, getOriginX(), getOriginY(), noteHead.getRegionWidth(), noteHead.getRegionHeight(), getScaleX(), getScaleY(), getRotation());
+            float noteY;
+            boolean drawFlat = false;
+            boolean drawSharp = false;
+            boolean drawNoteLine = false;
+            switch(this.note.getChromatic()){
+                case C_NATURAL:
+                    noteY = 0;
+                    drawNoteLine = true;
+                    break;
+                case C_SHARP:
+                    noteY = 0;
+                    drawSharp = true;
+                    drawNoteLine = true;
+                    break;
+                case D_NATURAL:
+                    noteY = 2;
+                    break;
+                case E_FLAT:
+                    noteY = 5;
+                    drawFlat = true;
+                    break;
+                case E_NATURAL:
+                    noteY = 5;
+                    break;
+                case F_NATURAL:
+                    noteY = 9;
+                    break;
+                case F_SHARP:
+                    noteY = 9;
+                    drawSharp = true;
+                    break;
+                case G_NATURAL:
+                    noteY = 13;
+                    break;
+                case A_FLAT:
+                    noteY = 17;
+                    drawFlat = true;
+                    break;
+                case A_NATURAL:
+                    noteY = 17;
+                    break;
+                case B_FLAT:
+                    noteY = 20;
+                    drawFlat = true;
+                    break;
+                case B_NATURAL:
+                    noteY = 20;
+                    break;
+                default:
+                    noteY = -1;
+            }
 
-            DoReMi.Fonts.normal.setColor(DoReMi.Palette.black);
-            DoReMi.Fonts.normal.draw(batch, this.note.toString(), getX() + getWidth() / 2 - 10, getY() + getHeight() / 2, getWidth(), Align.center, false);
+            final float absNoteX = Math.round(getX() + 16);
+            final float absNoteY = Math.round(getY() + (note.getOctave() - 2) * 22) + Math.round(noteY);
+
+            batch.draw(assetManager.get(spriteSheet).createSprite("note"), absNoteX, absNoteY);
+            if(drawNoteLine){
+                batch.draw(assetManager.get(spriteSheet).createSprite("noteline"), absNoteX - 2, absNoteY);
+            }
+
+            if(drawFlat){
+                batch.draw(assetManager.get(spriteSheet).createSprite("flat"), absNoteX - 7, absNoteY);
+            }else if(drawSharp){
+                batch.draw(assetManager.get(spriteSheet).createSprite("sharp"), absNoteX - 7, absNoteY);
+            }
+
+            if(false) {
+                DoReMi.Fonts.normal.setColor(DoReMi.Palette.black);
+                DoReMi.Fonts.normal.draw(batch, this.note.toString(), getX() + getWidth() / 2 - 10, getY() + getHeight() / 2, getWidth(), Align.center, false);
+            }
         }
     }
 

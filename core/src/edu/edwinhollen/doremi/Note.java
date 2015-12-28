@@ -59,6 +59,14 @@ public class Note {
         this.octave = parts.length > 2 ? Integer.parseInt(Character.toString(parts[2])) : null;
     }
 
+    public Integer getOctave() {
+        return octave;
+    }
+
+    public Chromatic getChromatic() {
+        return chromatic;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Note)) return false;

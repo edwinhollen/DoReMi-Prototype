@@ -143,10 +143,31 @@ button_up_middle
   orig: 1, 40
   offset: 0, 0
   index: -1
+noteline
+  rotate: false
+  xy: 274, 6
+  size: 16, 8
+  orig: 16, 8
+  offset: 0, 0
+  index: -1
+sharp
+  rotate: false
+  xy: 958, 47
+  size: 7, 15
+  orig: 7, 15
+  offset: 0, 0
+  index: -1
 note
   rotate: false
-  xy: 274, 4
-  size: 14, 10
-  orig: 14, 10
+  xy: 868, 27
+  size: 12, 8
+  orig: 12, 8
+  offset: 0, 0
+  index: -1
+flat
+  rotate: false
+  xy: 958, 32
+  size: 5, 13
+  orig: 5, 13
   offset: 0, 0
   index: -1
