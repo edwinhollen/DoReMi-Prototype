@@ -30,8 +30,9 @@ public class PuzzleStage extends BaseStage {
     AssetManager assetManager;
 
     Options options;
+    AssetDescriptor<Texture> outlines = new AssetDescriptor<Texture>("new_notepieces_outlineonly.png", Texture.class);
 
-    final Texture outlines = new Texture(Gdx.files.internal("note_pieces_together_outlines.png"));
+    // final Texture outlines = new Texture(Gdx.files.internal("note_pieces_together_outlines.png"));
 
     @Override
     public void dispose() {
@@ -62,6 +63,10 @@ public class PuzzleStage extends BaseStage {
         for(Note n : p.getAllNotes()){
             assetManager.load(n.getAssetDescriptor());
         }
+
+        // load images
+        assetManager.load(outlines);
+        assetManager.finishLoading();
 
         // load ui sounds
 
@@ -233,7 +238,7 @@ public class PuzzleStage extends BaseStage {
     }
 
     public class NotePieceActor extends Actor {
-        final Texture notePieceTemplate = new Texture(Gdx.files.internal("note_pieces_together.png"));
+        final Texture notePieceTemplate = new Texture(Gdx.files.internal("new_notepieces_outlined.png"));
         final TextureRegion noteHead = new TextureRegion(new Texture(Gdx.files.internal("note.png")));
         final TextureRegion
             closed_closed = new TextureRegion(notePieceTemplate, 0, 0, 52, 46),
@@ -375,9 +380,9 @@ public class PuzzleStage extends BaseStage {
     public class SolutionSlotActor extends Actor{
         // static final Texture outlines = new Texture(Gdx.files.internal("note_pieces_together_outlines.png"));
         final TextureRegion
-                left = new TextureRegion(outlines, 0, 184, 58, 46),
-                middle = new TextureRegion(outlines, 0, 138, 58, 46),
-                right = new TextureRegion(outlines, 0, 92, 52, 46);
+                left = new TextureRegion(assetManager.get(outlines), 0, 184, 58, 46),
+                middle = new TextureRegion(assetManager.get(outlines), 0, 138, 58, 46),
+                right = new TextureRegion(assetManager.get(outlines), 0, 92, 52, 46);
 
         NotePieceActor occupiedBy = null;
         final Integer solutionSlot;
