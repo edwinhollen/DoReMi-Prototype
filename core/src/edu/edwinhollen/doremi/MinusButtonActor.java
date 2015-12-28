@@ -14,8 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 public class MinusButtonActor extends Actor {
     static final Texture minusButtonTexture = new Texture(Gdx.files.internal("minusbutton.png"));
     static final TextureRegion
-            up = new TextureRegion(minusButtonTexture, 0, 0, 39, 40),
-            down = new TextureRegion(minusButtonTexture, 0, 40, 39, 40);
+            up = new TextureRegion(minusButtonTexture, 0, 0, minusButtonTexture.getWidth(), minusButtonTexture.getHeight()),
+            down = new TextureRegion(minusButtonTexture, 0, 0, minusButtonTexture.getWidth(), minusButtonTexture.getHeight());
     final Runnable onClick;
 
     public MinusButtonActor(final Runnable onClick){
