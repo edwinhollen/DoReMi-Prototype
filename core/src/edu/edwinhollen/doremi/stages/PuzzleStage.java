@@ -6,6 +6,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
@@ -26,6 +28,7 @@ public class PuzzleStage extends BaseStage {
     Group solutionSlotActors;
     Group notePieceActors;
     Puzzle p;
+    AssetDescriptor<TextureAtlas> spriteSheet;
     AssetDescriptor<Sound> clickUp, clickDown, pop, yeah;
     AssetDescriptor<Texture> outlines, hearButton, notePiecesSpread, noteHead;
     AssetManager assetManager;
@@ -54,26 +57,18 @@ public class PuzzleStage extends BaseStage {
         // p = new Puzzle(new Scale(Chromatic.C_NATURAL, 2, ScalePattern.MINOR).getNotes(), new LinkedList<Note>());
         System.out.println(p.toString());
 
-        // load sounds
+        // initialize asset manager
         assetManager = new AssetManager();
+
+        // load sprite sheet
+        spriteSheet = new AssetDescriptor<TextureAtlas>(Gdx.files.internal("pack.pack"), TextureAtlas.class);
+        assetManager.load(spriteSheet);
+        assetManager.finishLoading();
 
         // load note sounds
         for(Note n : p.getAllNotes()){
             assetManager.load(n.getAssetDescriptor());
         }
-
-        // load images
-        outlines = new AssetDescriptor<>(Gdx.files.internal("new_notepieces_outlineonly.png"), Texture.class);
-        assetManager.load(outlines);
-        hearButton = new AssetDescriptor<>(Gdx.files.internal("button_hear.png"), Texture.class);
-        assetManager.load(hearButton);
-        notePiecesSpread = new AssetDescriptor<>(Gdx.files.internal("new_notepieces_outlined.png"), Texture.class);
-        assetManager.load(notePiecesSpread);
-        noteHead = new AssetDescriptor<>(Gdx.files.internal("note.png"), Texture.class);
-        assetManager.load(noteHead);
-
-        // finish loading images before async loading sounds
-        assetManager.finishLoading();
 
         // load ui sounds
         clickDown = new AssetDescriptor<>("click_down.mp3", Sound.class);
@@ -201,16 +196,18 @@ public class PuzzleStage extends BaseStage {
 
     public class ListenButtonActor extends Actor{
         boolean isDown = false;
-        private TextureRegion regionUp = new TextureRegion(
-                assetManager.get(hearButton),
+        /*private TextureRegion up = new TextureRegion(
+                assetManager.get(spriteSheet).createSprite("button_hear"),
                 0,
                 0,
                 assetManager.get(hearButton).getWidth(),
                 assetManager.get(hearButton).getHeight()
         );
+        */
+        private Sprite up = assetManager.get(spriteSheet).createSprite("button_hear");
 
         public ListenButtonActor(){
-            setSize(regionUp.getRegionWidth(), regionUp.getRegionHeight());
+            setSize(up.getWidth(), up.getHeight());
             setOrigin(Align.center);
             addListener(new InputListener(){
                 @Override
@@ -239,19 +236,26 @@ public class PuzzleStage extends BaseStage {
 
         @Override
         public void draw(Batch batch, float parentAlpha) {
-            TextureRegion tr = regionUp;
+            TextureRegion tr = up;
             batch.draw(tr, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
 
         }
     }
 
     public class NotePieceActor extends Actor {
+        /*
         final TextureRegion
             closed_closed = new TextureRegion(assetManager.get(notePiecesSpread), 0, 0, 52, 46),
             // closed_female = new TextureRegion(assetManager.get(notePiecesSpread), 0, 46, 52, 46),
             female_closed = new TextureRegion(assetManager.get(notePiecesSpread), 0, 92, 52, 46),
             female_male = new TextureRegion(assetManager.get(notePiecesSpread), 0, 138, 58, 46),
             closed_male = new TextureRegion(assetManager.get(notePiecesSpread), 0, 184, 58, 46);
+            */
+        private Sprite
+            closed_closed = assetManager.get(spriteSheet).createSprite("notepiece_closed_closed"),
+            female_closed = assetManager.get(spriteSheet).createSprite("notepiece_female_closed"),
+            female_male = assetManager.get(spriteSheet).createSprite("notepiece_female_male"),
+            closed_male = assetManager.get(spriteSheet).createSprite("notepiece_closed_male");
         final NotePieceOrientation orientation;
         final Note note;
         // final Action wiggleAction = Actions.forever(Actions.sequence(Actions.rotateBy(5.0f, 0.5f), Actions.rotateBy(-5f, 0.5f)));
@@ -386,10 +390,10 @@ public class PuzzleStage extends BaseStage {
 
     public class SolutionSlotActor extends Actor{
         // static final Texture outlines = new Texture(Gdx.files.internal("note_pieces_together_outlines.png"));
-        final TextureRegion
-                left = new TextureRegion(assetManager.get(outlines), 0, 184, 58, 46),
-                middle = new TextureRegion(assetManager.get(outlines), 0, 138, 58, 46),
-                right = new TextureRegion(assetManager.get(outlines), 0, 92, 52, 46);
+        final Sprite
+                left = assetManager.get(spriteSheet).createSprite("notepiece_outline_closed_male"),
+                middle = assetManager.get(spriteSheet).createSprite("notepiece_outline_female_male"),
+                right = assetManager.get(spriteSheet).createSprite("notepiece_outline_female_closed");
 
         NotePieceActor occupiedBy = null;
         final Integer solutionSlot;
@@ -407,20 +411,20 @@ public class PuzzleStage extends BaseStage {
 
         @Override
         public void draw(Batch batch, float parentAlpha) {
-            TextureRegion tr;
+            Sprite s;
             switch(this.orientation){
                 case LEFT:
-                    tr = left;
+                    s = left;
                     break;
                 case MIDDLE:
-                    tr = middle;
+                    s = middle;
                     break;
                 default:
-                    tr = right;
+                    s = right;
                     break;
             }
-            setSize(tr.getRegionWidth(), tr.getRegionHeight());
-            batch.draw(tr, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+            setSize(s.getWidth(), s.getHeight());
+            batch.draw(s, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         }
 
         public void occupy(NotePieceActor notePieceActor){

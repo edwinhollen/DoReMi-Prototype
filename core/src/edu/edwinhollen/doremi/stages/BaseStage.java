@@ -19,7 +19,7 @@ public abstract class BaseStage extends Stage {
     boolean backButton = true;
     Actor backButtonActor;
 
-    final TextureRegion arrowLeft = new TextureRegion(new Texture(Gdx.files.internal("arrow_left.png")));
+    final TextureRegion arrowLeft = new TextureRegion(new Texture(Gdx.files.internal("images/arrow_left.png")));
 
     public BaseStage(Viewport viewport, Batch batch){
         this(viewport, batch, DoReMi.Palette.black);

@@ -1,0 +1,152 @@
+
+pack.png
+format: RGBA8888
+filter: Linear,Nearest
+repeat: none
+violin
+  rotate: false
+  xy: 1, 2
+  size: 188, 60
+  orig: 188, 60
+  offset: 0, 0
+  index: -1
+violin_string
+  rotate: false
+  xy: 191, 1
+  size: 81, 61
+  orig: 81, 61
+  offset: 0, 0
+  index: -1
+notepiece_closed_male
+  rotate: false
+  xy: 274, 16
+  size: 56, 46
+  orig: 56, 46
+  offset: 0, 0
+  index: -1
+notepiece_female_male
+  rotate: false
+  xy: 332, 16
+  size: 56, 46
+  orig: 56, 46
+  offset: 0, 0
+  index: -1
+notepiece_outline_closed_male
+  rotate: false
+  xy: 390, 16
+  size: 56, 46
+  orig: 56, 46
+  offset: 0, 0
+  index: -1
+notepiece_outline_female_male
+  rotate: false
+  xy: 448, 16
+  size: 56, 46
+  orig: 56, 46
+  offset: 0, 0
+  index: -1
+button_hear
+  rotate: false
+  xy: 506, 16
+  size: 52, 46
+  orig: 52, 46
+  offset: 0, 0
+  index: -1
+notepiece_closed_closed
+  rotate: false
+  xy: 560, 16
+  size: 52, 46
+  orig: 52, 46
+  offset: 0, 0
+  index: -1
+notepiece_female_closed
+  rotate: false
+  xy: 614, 16
+  size: 52, 46
+  orig: 52, 46
+  offset: 0, 0
+  index: -1
+notepiece_outline_closed_closed
+  rotate: false
+  xy: 668, 16
+  size: 52, 46
+  orig: 52, 46
+  offset: 0, 0
+  index: -1
+notepiece_outline_female_closed
+  rotate: false
+  xy: 722, 16
+  size: 52, 46
+  orig: 52, 46
+  offset: 0, 0
+  index: -1
+button_down_left
+  rotate: false
+  xy: 776, 22
+  size: 21, 40
+  orig: 21, 40
+  offset: 0, 0
+  index: -1
+button_down_right
+  rotate: false
+  xy: 799, 22
+  size: 21, 40
+  orig: 21, 40
+  offset: 0, 0
+  index: -1
+button_up_left
+  rotate: false
+  xy: 822, 22
+  size: 21, 40
+  orig: 21, 40
+  offset: 0, 0
+  index: -1
+button_up_right
+  rotate: false
+  xy: 845, 22
+  size: 21, 40
+  orig: 21, 40
+  offset: 0, 0
+  index: -1
+arrow_left
+  rotate: false
+  xy: 868, 37
+  size: 26, 25
+  orig: 26, 25
+  offset: 0, 0
+  index: -1
+minusbutton
+  rotate: false
+  xy: 896, 37
+  size: 26, 25
+  orig: 26, 25
+  offset: 0, 0
+  index: -1
+plusbutton
+  rotate: false
+  xy: 924, 37
+  size: 26, 25
+  orig: 26, 25
+  offset: 0, 0
+  index: -1
+button_down_middle
+  rotate: false
+  xy: 952, 22
+  size: 1, 40
+  orig: 1, 40
+  offset: 0, 0
+  index: -1
+button_up_middle
+  rotate: false
+  xy: 955, 22
+  size: 1, 40
+  orig: 1, 40
+  offset: 0, 0
+  index: -1
+note
+  rotate: false
+  xy: 274, 4
+  size: 14, 10
+  orig: 14, 10
+  offset: 0, 0
+  index: -1

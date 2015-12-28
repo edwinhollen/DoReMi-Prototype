@@ -20,7 +20,7 @@ public class ButtonActor extends Actor {
     boolean isDown = false;
     long lastDown = -1;
 
-    final Texture buttonTemplate = new Texture(Gdx.files.internal("button_template.png"));
+    final Texture buttonTemplate = new Texture(Gdx.files.internal("reference/button_template.png"));
     final Sound clickDown = Gdx.audio.newSound(Gdx.files.internal("click_down.mp3"));
     final Sound clickUp = Gdx.audio.newSound(Gdx.files.internal("click_up.mp3"));
     final TextureRegion

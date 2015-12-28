@@ -45,7 +45,7 @@ public class TitleStage extends BaseStage {
 
         // violin actor
         violin = new Actor(){
-            TextureRegion textureRegion = new TextureRegion(new Texture(Gdx.files.internal("violin.png")));
+            TextureRegion textureRegion = new TextureRegion(new Texture(Gdx.files.internal("images/violin.png")));
             @Override
             public void draw(Batch batch, float parentAlpha) {
                 setSize(textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
@@ -62,7 +62,7 @@ public class TitleStage extends BaseStage {
 
         // violin string actor
         violinString = new Actor(){
-            TextureRegion textureRegion = new TextureRegion(new Texture(Gdx.files.internal("violin_string.png")));
+            TextureRegion textureRegion = new TextureRegion(new Texture(Gdx.files.internal("images/violin_string.png")));
 
             @Override
             public void draw(Batch batch, float parentAlpha) {
