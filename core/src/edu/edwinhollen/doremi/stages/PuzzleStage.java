@@ -1,6 +1,7 @@
 package edu.edwinhollen.doremi.stages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
@@ -27,18 +28,17 @@ public class PuzzleStage extends BaseStage {
     Actor listenButton;
     Group solutionSlotActors;
     Group notePieceActors;
-    Puzzle p;
+    Puzzle puzzle;
     AssetDescriptor<TextureAtlas> spriteSheet;
     AssetDescriptor<Sound> clickUp, clickDown, pop, yeah;
     AssetDescriptor<Texture> outlines, hearButton, notePiecesSpread, noteHead;
     AssetManager assetManager;
 
-    Options options;
+    Preferences preferences;
 
     @Override
     public void dispose() {
         super.dispose();
-        assetManager.dispose();
     }
 
     @Override
@@ -50,28 +50,33 @@ public class PuzzleStage extends BaseStage {
         super(viewport, batch, DoReMi.Palette.gray);
 
         // get user options
-        this.options = new Options();
+        this.preferences = Gdx.app.getPreferences("DoReMi");
 
         // generate puzzle based on user options
-        // p = new Puzzle(this.options.getRangeDifficulty(), this.options.getNoteDiversity());
+        puzzle = new Puzzle(
+                Puzzle.RangeDifficulty.valueOf(this.preferences.getString(OptionsStage.RANGE_DIFFICULTY_KEY)),
+                Puzzle.NoteDiversity.valueOf(this.preferences.getString(OptionsStage.NOTE_DIVERSITY_KEY))
+            );
+
+        /*
         List<Note> testNotes = new LinkedList<>();
+
         for(Chromatic c : Chromatic.values()){
             testNotes.add(new Note(c, 2));
         }
-        p = new Puzzle(testNotes, new LinkedList<Note>());
-        // p = new Puzzle(new Scale(Chromatic.C_NATURAL, 2, ScalePattern.MINOR).getNotes(), new LinkedList<Note>());
-        System.out.println(p.toString());
+        puzzle = new Puzzle(testNotes, new LinkedList<Note>());
+        */
+        // puzzle = new Puzzle(new Scale(Chromatic.C_NATURAL, 2, ScalePattern.MINOR).getNotes(), new LinkedList<Note>());
+        System.out.println(puzzle.toString());
+
+
 
         // initialize asset manager
-        assetManager = new AssetManager();
-
-        // load sprite sheet
-        spriteSheet = new AssetDescriptor<TextureAtlas>(Gdx.files.internal("pack.pack"), TextureAtlas.class);
-        assetManager.load(spriteSheet);
-        assetManager.finishLoading();
+        assetManager = DoReMi.assets;
+        spriteSheet = DoReMi.spritesheet;
 
         // load note sounds
-        for(Note n : p.getAllNotes()){
+        for(Note n : puzzle.getAllNotes()){
             assetManager.load(n.getAssetDescriptor());
         }
 
@@ -115,7 +120,7 @@ public class PuzzleStage extends BaseStage {
 
         // add solution notes actors
         notePieceActors = new Group();
-        List<Note> solutionNotes = p.getSolutionNotes();
+        List<Note> solutionNotes = puzzle.getSolutionNotes();
         for(int i = 0; i < solutionNotes.size(); i++){
             NotePieceActor actorToAdd;
             NotePieceOrientation orientation;
@@ -136,7 +141,7 @@ public class PuzzleStage extends BaseStage {
         }
 
         // add extra notes actors
-        for(Note extraNote : p.getExtraNotes()){
+        for(Note extraNote : puzzle.getExtraNotes()){
             NotePieceActor extra = new NotePieceActor(Pick.pick(NotePieceOrientation.values()), extraNote);
             extra.setPosition(viewport.getWorldWidth() / 2 + Pick.integer(-40, 40), viewport.getWorldHeight() / 2 - Pick.integer(70));
             extra.setZIndex(0);
@@ -157,17 +162,11 @@ public class PuzzleStage extends BaseStage {
                 System.out.println("ssa #"+ssa.solutionSlot+" is not occupied, not solved");
                 return false;
             }
-            /*
-            if(!ssa.occupiedBy.note.equals(p.getSolutionNotes().get(ssa.solutionSlot))){
-                System.out.println("the note in slot "+ssa.solutionSlot+" is not correct, not solved");
-                return false;
-            }
-            */
             proposedSolution.add(ssa.occupiedBy.getNote());
         }
         System.out.println("Proposed solution "+proposedSolution.toString());
         for(int i = 0; i < proposedSolution.size(); i++){
-            if(!proposedSolution.get(i).equals(p.getSolutionNotes().get(i))){
+            if(!proposedSolution.get(i).equals(puzzle.getSolutionNotes().get(i))){
                 System.out.println("Note in slot "+i+" is incorrect");
                 return false;
             }
@@ -219,12 +218,12 @@ public class PuzzleStage extends BaseStage {
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     super.touchDown(event, x, y, pointer, button);
                     addAction(Actions.repeat(3, Actions.sequence(Actions.rotateTo(-5f, 0.2f), Actions.rotateTo(5f, 0.2f), Actions.rotateTo(0f, 0.1f))));
-                    for(int i = 0; i < p.getSolutionNotes().size(); i++){
+                    for(int i = 0; i < puzzle.getSolutionNotes().size(); i++){
                         final int finalI = i;
                         Timer.schedule(new Timer.Task() {
                             @Override
                             public void run() {
-                                assetManager.get(p.getSolutionNotes().get(finalI).getAssetDescriptor()).play();
+                                assetManager.get(puzzle.getSolutionNotes().get(finalI).getAssetDescriptor()).play();
                             }
                         }, 0.5f * i);
                     }

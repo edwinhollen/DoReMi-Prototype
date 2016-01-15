@@ -2,14 +2,19 @@ package edu.edwinhollen.doremi;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import edu.edwinhollen.doremi.stages.OptionsStage;
 import edu.edwinhollen.doremi.stages.PuzzleStage;
 import edu.edwinhollen.doremi.stages.TitleStage;
 
@@ -19,13 +24,23 @@ public class DoReMi extends ApplicationAdapter {
 	static SpriteBatch batch;
 	static Stage currentStage;
 	static Viewport viewport;
+	public static AssetManager assets;
+	public static AssetDescriptor<TextureAtlas> spritesheet;
+	public static Label.LabelStyle labelStyle;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		viewport = new FitViewport(336, 210);
 
-		changeStage(PuzzleStage.class);
+		assets = new AssetManager();
+		spritesheet = new AssetDescriptor<TextureAtlas>(Gdx.files.internal("pack.pack"), TextureAtlas.class);
+		assets.load(spritesheet);
+		assets.finishLoading();
+
+		labelStyle = new Label.LabelStyle(Fonts.normal, Palette.black);
+
+		changeStage(TitleStage.class);
 	}
 
 	@Override
